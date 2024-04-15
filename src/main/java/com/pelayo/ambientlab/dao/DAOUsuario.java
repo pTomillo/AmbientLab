@@ -1,11 +1,13 @@
 package com.pelayo.ambientlab.dao;
 
+import com.google.gson.Gson;
 import com.pelayo.ambientlab.modelo.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DAOUsuario {
     public Connection con = null;
@@ -52,7 +54,6 @@ public class DAOUsuario {
         return null;
     }
 
-
     public void borrarUsuario(int id) throws SQLException {
         String sql = "DELETE FROM usuario WHERE id=?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -61,5 +62,33 @@ public class DAOUsuario {
         ps.executeUpdate();
 
         ps.close();
+    }
+
+    public ArrayList<Usuario> listarUsuarios() throws SQLException {
+        String sql = "SELECT * FROM usuario ";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Usuario> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Usuario>();
+            }
+            ls.add(new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6)));
+        }
+        return ls;
+    }
+
+    public String llamarJson() throws SQLException {
+        String json = "";
+
+        Gson gson = new Gson();
+
+
+        json = gson.toJson(this.listarUsuarios());
+
+        return json;
     }
 }

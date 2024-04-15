@@ -1,13 +1,12 @@
 package com.pelayo.ambientlab.modelo;
 
 
+import com.google.gson.Gson;
 import com.pelayo.ambientlab.dao.DAOUsuario;
 
 import java.sql.SQLException;
 
 public class Usuario {
-
-    DAOUsuario daoUsuario = new DAOUsuario();
 
     private int id;
     private String nombre;
@@ -91,19 +90,50 @@ public class Usuario {
         this.hash = hash;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", rol=" + rol +
+                ", email='" + email + '\'' +
+                ", hash='" + hash + '\'' +
+                '}';
+    }
+
     // Metodos de la clase Usuario.
 
     public void crearUsuario() throws SQLException {
+        DAOUsuario daoUsuario = new DAOUsuario();
         daoUsuario.crearUsuario(this);
     }
 
     public void borrarUsuario() throws SQLException {
+        DAOUsuario daoUsuario = new DAOUsuario();
         daoUsuario.borrarUsuario(this.getId());
     }
+
+    public String obtenerJSON() {
+        String json = "";
+        Gson gson = new Gson();
+        json = gson.toJson(this);
+        return json;
+    }
+
+
 
     // Chequeos de rol:
 
     public boolean esAdmin(){
         return getRol() == 1;
     }
+
+    public boolean esSupervisor() { return  getRol() == 2;}
+
+    public boolean esAnalista() { return getRol()== 3;}
+
+    public boolean esRegistro() { return getRol()== 4;}
+
+    public boolean esCliente() {return  getRol()== 9;}
 }

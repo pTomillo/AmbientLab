@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 
@@ -32,33 +33,53 @@ public class GestionUsuario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        PrintWriter out = response.getWriter();
+
+
+        try {
+            Usuario chequeo;
+
+            chequeo = servicioLogin.chequeoSesion(request, response);
+
+
+            if (chequeo != null && chequeo.esAdmin()) {
+                String json = "";
+                json = this.daoUsuario.llamarJson();
+                System.out.println(json);
+                out.print(json);
+            }
+
+        } catch (HTTPStatusException e) {
+            response.sendError(e.getEstatus(), e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        Usuario chequeo;
         try {
-            chequeo = servicioLogin.chequeoSesion(request, response);
-        } catch (HTTPStatusException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (chequeo == null) {
-            return;
-        }
+            Usuario chequeo;
+            try {
+                chequeo = servicioLogin.chequeoSesion(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
-        String nombre = request.getParameter("nombre");
-        String apellidos = request.getParameter("apellidos");
-        int rol = Integer.parseInt(request.getParameter("rol"));
-        String email = request.getParameter("email");
-        String contrasena = request.getParameter("contrasena");
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+            int rol = Integer.parseInt(request.getParameter("rol"));
+            String email = request.getParameter("email");
+            String contrasena = request.getParameter("contrasena");
 
-        try {
-            servicioUsuario.crearUsuario(chequeo, nombre, apellidos, rol, email, contrasena);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            try {
+                servicioUsuario.crearUsuario(chequeo, nombre, apellidos, rol, email, contrasena);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (HTTPStatusException e) {
+            response.sendError(e.getEstatus(), e.getMessage());
         }
-
     }
 
     @Override
@@ -74,19 +95,20 @@ public class GestionUsuario extends HttpServlet {
         Usuario chequeo = null;
         try {
             chequeo = servicioLogin.chequeoSesion(request, response);
-        } catch (HTTPStatusException | SQLException e) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            try {
+                servicioUsuario.borrarUsuario(chequeo, id);
+            } catch (HTTPStatusException | SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            response.getWriter().write("Usuario Borrado");
+        } catch (HTTPStatusException e) {
+            response.sendError(e.getEstatus(), e.getMessage());
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        try {
-            servicioUsuario.borrarUsuario(chequeo, id);
-        } catch (HTTPStatusException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        response.getWriter().write("Usuario Borrado");
     }
 }

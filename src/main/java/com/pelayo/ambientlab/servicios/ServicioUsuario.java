@@ -1,5 +1,6 @@
 package com.pelayo.ambientlab.servicios;
 
+import com.pelayo.ambientlab.dao.DAOUsuario;
 import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Usuario;
 
@@ -7,9 +8,11 @@ import java.sql.SQLException;
 
 public class ServicioUsuario {
     ServicioLogin servicioLogin = new ServicioLogin();
+    DAOUsuario daoUsuario = new DAOUsuario();
 
     public ServicioUsuario() throws SQLException {
     }
+
 
     public void crearUsuario(Usuario creador, String nombre, String apellidos, int rol, String email, String contrasena) throws SQLException {
         if (creador.getRol() == 1) {
@@ -37,6 +40,7 @@ public class ServicioUsuario {
         usuarioABorrar.setId(id);
         usuarioABorrar.borrarUsuario();
     }
+
 
 
 

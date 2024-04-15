@@ -21,8 +21,7 @@ public class ServicioLogin {
     public ServicioLogin() throws SQLException {
     }
 
-    public Usuario chequeoSesion(HttpServletRequest request) throws HTTPStatusException, SQLException {
-        try {
+    public Usuario chequeoSesion(HttpServletRequest request, HttpServletResponse response) throws HTTPStatusException, SQLException {
             if (request.getCookies() == null) {
                 throw new HTTPStatusException(401);
             }
@@ -46,10 +45,6 @@ public class ServicioLogin {
             }
             return usuario;
 
-        } catch (HTTPStatusException e) {
-            throw new RuntimeException(e);
-
-        }
     }
 
 

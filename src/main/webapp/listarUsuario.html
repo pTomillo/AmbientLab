@@ -9,9 +9,10 @@
 
 <script type="text/javascript">
     function llamada() {
-        fetch('gestionUsuario?op=1')
+        fetch('GestionUsuario', {method: 'GET'})
             .then(response => response.json())
             .then(data => pintarTabla(data))
+            .catch(error => console.error())
     }
 
     function pintarTabla(datos) {

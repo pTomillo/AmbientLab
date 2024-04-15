@@ -58,13 +58,13 @@ public class LoginUsuario extends HttpServlet {
                 response.addCookie(new Cookie("sesion", sesion.getCookie()));
                 response.getWriter().write("OK");
             } else {
-                response.sendError(404, "Usuario no valido");
+                throw new HTTPStatusException(404);
             }
-        } catch (SQLException | HTTPStatusException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (HTTPStatusException e){
+            response.sendError(e.getEstatus(),e.getMessage());
         }
-
-
     }
 
     @Override
