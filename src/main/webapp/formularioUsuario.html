@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Usuario</title>
+    <link rel="stylesheet" href="base.css">
+
+    <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/garet');
+    </style>
+</head>
+
+<body>
+
+
+<div id="contenedor">
+    <h1>Crear usuario:</h1>
+    <form name="CrearUsuario" action="/GestionUsuario" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required><br><br>
+        <label for="rol">Rol:</label>
+        <select name="rol" id="rol">
+            <option value="1">Admin</option>
+            <option value="2">Supervisor</option>
+            <option value="3">Analista</option>
+            <option value="4">Registro</option>
+            <option value="9">Cliente</option>
+        </select><br><br>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required><br><br>
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required><br><br>
+        <input type="submit" value="Crear Usuario" onsubmit="window.location.href; return false">
+    </form>
+  
+</div>
+
+</body>
+
+</html>

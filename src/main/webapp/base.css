@@ -1,0 +1,23 @@
+*{
+    
+    font-family: 'Garet', sans-serif;
+    
+}
+
+body{
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    background-color: #f0eff4;
+}
+
+#contenedor{
+    padding: 2.5%;
+    grid-column: 2/ span 6;
+    
+    background-color: #DFDFDF;
+    border: 2px outset #3bc14a;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    -webkit-box-shadow: 5px 5px 15px 5px #0B132B; 
+    box-shadow: 5px 5px 15px 5px #0B132B;
+}
