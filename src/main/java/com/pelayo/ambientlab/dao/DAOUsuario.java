@@ -17,8 +17,6 @@ public class DAOUsuario {
 
     public void crearUsuario(Usuario u) throws SQLException {
 
-
-
         String sql = "INSERT INTO usuario ( nombre, apellidos, rol, email, contrasena) VALUES (?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -55,6 +53,13 @@ public class DAOUsuario {
     }
 
 
+    public void borrarUsuario(int id) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE id=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
 
+        ps.executeUpdate();
 
+        ps.close();
+    }
 }

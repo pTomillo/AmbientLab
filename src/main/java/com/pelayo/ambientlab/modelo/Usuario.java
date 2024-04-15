@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 public class Usuario {
 
+    DAOUsuario daoUsuario = new DAOUsuario();
+
     private int id;
     private String nombre;
     private String apellidos;
@@ -16,11 +18,11 @@ public class Usuario {
 
 
     // Constructor vacio.
-    public Usuario() {
+    public Usuario() throws SQLException {
     }
 
     // Constructor con id.
-    public Usuario(int id, String nombre, String apellidos, int rol, String email, String hash) {
+    public Usuario(int id, String nombre, String apellidos, int rol, String email, String hash) throws SQLException {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -30,12 +32,15 @@ public class Usuario {
     }
 
     // Constructor sin id.
-    public Usuario(String nombre, String apellidos, int rol, String email, String hash) {
+    public Usuario(String nombre, String apellidos, int rol, String email, String hash) throws SQLException {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.rol = rol;
         this.email = email;
         this.hash = hash;
+    }
+
+    public Usuario(int id) throws SQLException {
     }
 
     public int getId() {
@@ -86,8 +91,19 @@ public class Usuario {
         this.hash = hash;
     }
 
+    // Metodos de la clase Usuario.
+
     public void crearUsuario() throws SQLException {
-        DAOUsuario daoUsuario = new DAOUsuario();
         daoUsuario.crearUsuario(this);
+    }
+
+    public void borrarUsuario() throws SQLException {
+        daoUsuario.borrarUsuario(this.getId());
+    }
+
+    // Chequeos de rol:
+
+    public boolean esAdmin(){
+        return getRol() == 1;
     }
 }

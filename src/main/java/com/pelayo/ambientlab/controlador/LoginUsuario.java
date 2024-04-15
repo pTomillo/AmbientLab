@@ -2,6 +2,7 @@ package com.pelayo.ambientlab.controlador;
 
 import com.pelayo.ambientlab.dao.DAOSesion;
 import com.pelayo.ambientlab.dao.DAOUsuario;
+import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Sesion;
 import com.pelayo.ambientlab.modelo.Usuario;
 import com.pelayo.ambientlab.servicios.ServicioLogin;
@@ -44,7 +45,7 @@ public class LoginUsuario extends HttpServlet {
 
             // Si el usuario no es econtrado devolvemos el error.
             if (usuario == null) {
-                response.sendError(404, "Usuario no encontrado.");
+                throw new HTTPStatusException(404);
             }
             // Si es encontrado comprobamos que la contrasena sea la correcta, si es asi, devolvemos una cookie.
             if(this.servicioLogin.chequeoContrasena(contrasena, usuario.getHash())) {
@@ -59,7 +60,7 @@ public class LoginUsuario extends HttpServlet {
             } else {
                 response.sendError(404, "Usuario no valido");
             }
-        } catch (SQLException e) {
+        } catch (SQLException | HTTPStatusException e) {
             throw new RuntimeException(e);
         }
 

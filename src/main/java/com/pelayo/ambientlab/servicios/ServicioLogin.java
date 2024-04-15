@@ -3,6 +3,7 @@ package com.pelayo.ambientlab.servicios;
 import com.password4j.Password;
 import com.pelayo.ambientlab.dao.DAOSesion;
 import com.pelayo.ambientlab.dao.DAOUsuario;
+import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Sesion;
 import com.pelayo.ambientlab.modelo.Usuario;
 import jakarta.servlet.http.Cookie;
@@ -20,11 +21,10 @@ public class ServicioLogin {
     public ServicioLogin() throws SQLException {
     }
 
-    public Usuario chequeoSesion(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public Usuario chequeoSesion(HttpServletRequest request) throws HTTPStatusException, SQLException {
         try {
             if (request.getCookies() == null) {
-                response.sendError(401, "Acceso denegado");
-                return null;
+                throw new HTTPStatusException(401);
             }
 
             Cookie cookieSesion = null;
@@ -34,23 +34,21 @@ public class ServicioLogin {
                 }
             }
             if (cookieSesion == null) {
-                response.sendError(401, "Acceso denegado");
-                return null;
+                throw new HTTPStatusException(401);
             }
             Sesion sesion = this.daoSesion.sesionPorCookie(cookieSesion.getValue());
             if(sesion == null) {
-                response.sendError(401, "Acceso denegado");
-                return null;
+                throw new HTTPStatusException(401);
             }
             Usuario usuario = this.daoUsuario.usuarioPorId(sesion.getIdUsuario());
             if (usuario == null) {
-                response.sendError(401, "Acceso denegado");
-                return null;
+                throw new HTTPStatusException(401);
             }
             return usuario;
 
-        } catch (SQLException e) {
+        } catch (HTTPStatusException e) {
             throw new RuntimeException(e);
+
         }
     }
 
