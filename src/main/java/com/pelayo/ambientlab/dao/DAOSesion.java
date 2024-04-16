@@ -26,6 +26,13 @@ public class DAOSesion {
         ps.close();
     }
 
+    public void cerrarSesion(String cookie) throws SQLException {
+        String sql = "DELETE FROM sesion WHERE cookie = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, cookie);
+        ps.executeUpdate();
+    }
+
     public Sesion sesionPorCookie(String cookie) throws SQLException {
         String sql = "SELECT * FROM SESION WHERE cookie = ?";
         PreparedStatement ps = con.prepareStatement(sql);

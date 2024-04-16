@@ -37,37 +37,61 @@ public class LoginUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String email = request.getParameter("email");
-        String contrasena = request.getParameter("contrasena");
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
-        try {
-            Usuario usuario = this.daoUsuario.usuarioPorMail(email);
+        if (opcion == 0) {
+            String email = request.getParameter("email");
+            String contrasena = request.getParameter("contrasena");
 
-            // Si el usuario no es econtrado devolvemos el error.
-            if (usuario == null) {
-                throw new HTTPStatusException(404);
+            try {
+                Usuario usuario = this.daoUsuario.usuarioPorMail(email);
+
+                // Si el usuario no es econtrado devolvemos el error.
+                if (usuario == null) {
+                    throw new HTTPStatusException(404);
+                }
+                // Si es encontrado comprobamos que la contrasena sea la correcta, si es asi, devolvemos una cookie.
+                if (this.servicioLogin.chequeoContrasena(contrasena, usuario.getHash())) {
+                    String cookie = UUID.randomUUID().toString();
+
+                    Sesion sesion = new Sesion(usuario.getId(), cookie, new Date());
+
+                    this.daoSesion.crearSesion(sesion);
+
+                    response.addCookie(new Cookie("sesion", sesion.getCookie()));
+
+                    response.sendRedirect("index.html");
+
+                } else {
+                    throw new HTTPStatusException(404);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (HTTPStatusException e) {
+                response.sendError(e.getEstatus(), e.getMessage());
             }
-            // Si es encontrado comprobamos que la contrasena sea la correcta, si es asi, devolvemos una cookie.
-            if(this.servicioLogin.chequeoContrasena(contrasena, usuario.getHash())) {
-                String cookie = UUID.randomUUID().toString();
+        } else if (opcion == 1) {
+            // Obtener la cookie de sesion del usuario.
+            Cookie[] cookies = request.getCookies();
 
-                Sesion sesion = new Sesion(usuario.getId(), cookie, new Date());
-
-                this.daoSesion.crearSesion(sesion);
-
-                response.addCookie(new Cookie("sesion", sesion.getCookie()));
-
-                response.sendRedirect("index.html");
-
-            } else {
-                throw new HTTPStatusException(404);
+            // Verificar que la cookie existe.
+            if (cookies != null) {
+                for(Cookie cookie : cookies) {
+                    if (cookie.getName().equals("sesion")) {
+                        // Borramos el registro de la cookie de la BD.
+                        try {
+                            daoSesion.cerrarSesion(cookie.getValue());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // Decimos al navegador que elimine la cookie haciendola caducar y que la sesion se cierre.
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
+                    }
+                }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (HTTPStatusException e){
-            response.sendError(e.getEstatus(),e.getMessage());
+            response.sendRedirect("index.html");
         }
-
     }
 
     @Override
