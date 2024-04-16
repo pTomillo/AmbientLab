@@ -64,16 +64,65 @@ public class DAOUsuario {
         ps.close();
     }
 
+    public void editarUsuarioAdmin(Usuario usuarioUpdateAdmin) throws SQLException {
+        String sql = "UPDATE usuario SET nombre=?, apellidos=?, rol=?, email=? WHERE id =?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, usuarioUpdateAdmin.getNombre());
+        ps.setString(2, usuarioUpdateAdmin.getApellidos());
+        ps.setInt(3, usuarioUpdateAdmin.getRol());
+        ps.setString(4, usuarioUpdateAdmin.getEmail());
+        ps.setInt(5, usuarioUpdateAdmin.getId());
+
+        ps.executeUpdate();
+
+        ps.close();
+    }
+
     public void editarUsuario(Usuario usuarioUpdate) throws SQLException {
-        String sql = "UPDATE usuario SET nombre=?, apellidos=?, rol=?, email=?, contrasena=? WHERE id =?";
+        String sql = "UPDATE usuario SET nombre=?, apellidos=?, email=? WHERE id =?";
         PreparedStatement ps = con.prepareStatement(sql);
 
         ps.setString(1, usuarioUpdate.getNombre());
         ps.setString(2, usuarioUpdate.getApellidos());
-        ps.setInt(3, usuarioUpdate.getRol());
-        ps.setString(4, usuarioUpdate.getEmail());
-        ps.setString(5, usuarioUpdate.getHash());
-        ps.setInt(6, usuarioUpdate.getId());
+        ps.setString(3, usuarioUpdate.getEmail());
+        ps.setInt(4, usuarioUpdate.getId());
+
+        ps.executeUpdate();
+
+        ps.close();
+    }
+
+    public void asignarRol(int idRol, Usuario usuarioUpdate) throws SQLException {
+        String sql = "UPDATE usuario SET rol=? WHERE id =?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, idRol);
+        ps.setInt(2, usuarioUpdate.getId());
+
+        ps.executeUpdate();
+
+        ps.close();
+    }
+
+    public void cambiarContrasena (int id, String newHash) throws SQLException {
+        String sql = "UPDATE usuario SET contrasena=? WHERE id=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, newHash);
+        ps.setInt(2, id);
+
+        ps.executeUpdate();
+
+        ps.close();
+    }
+
+    public void resetContrasena(int id, String newHash) throws SQLException {
+        String sql = "UPDATE usuario SET contrasena=? WHERE id=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, newHash);
+        ps.setInt(2, id);
 
         ps.executeUpdate();
 
@@ -114,4 +163,6 @@ public class DAOUsuario {
         json = gson.toJson(this.usuarioPorId(id));
         return json;
     }
+
+
 }

@@ -39,6 +39,21 @@ public class Usuario {
         this.hash = hash;
     }
 
+    public Usuario(int id, String nombre, String apellidos, String email) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+    }
+
+    public Usuario(int id, String nombre, String apellidos, int rol, String email) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.rol = rol;
+        this.email = email;
+    }
+
     public Usuario(int id) throws SQLException {
     }
 

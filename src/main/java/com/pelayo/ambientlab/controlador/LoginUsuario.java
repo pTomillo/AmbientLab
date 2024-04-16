@@ -39,7 +39,7 @@ public class LoginUsuario extends HttpServlet {
 
         int opcion = Integer.parseInt(request.getParameter("op"));
 
-        if (opcion == 0) {
+        if (opcion == 0) { // Iniciar Sesion
             String email = request.getParameter("email");
             String contrasena = request.getParameter("contrasena");
 
@@ -70,7 +70,7 @@ public class LoginUsuario extends HttpServlet {
             } catch (HTTPStatusException e) {
                 response.sendError(e.getEstatus(), e.getMessage());
             }
-        } else if (opcion == 1) {
+        } else if (opcion == 1) { // Cerra Sesion
             // Obtener la cookie de sesion del usuario.
             Cookie[] cookies = request.getCookies();
 
