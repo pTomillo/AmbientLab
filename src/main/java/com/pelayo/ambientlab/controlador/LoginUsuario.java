@@ -56,7 +56,9 @@ public class LoginUsuario extends HttpServlet {
                 this.daoSesion.crearSesion(sesion);
 
                 response.addCookie(new Cookie("sesion", sesion.getCookie()));
-                response.getWriter().write("OK");
+
+                response.sendRedirect("index.html");
+
             } else {
                 throw new HTTPStatusException(404);
             }
@@ -65,6 +67,7 @@ public class LoginUsuario extends HttpServlet {
         } catch (HTTPStatusException e){
             response.sendError(e.getEstatus(),e.getMessage());
         }
+
     }
 
     @Override

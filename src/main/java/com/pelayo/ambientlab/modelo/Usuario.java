@@ -136,4 +136,6 @@ public class Usuario {
     public boolean esRegistro() { return getRol()== 4;}
 
     public boolean esCliente() {return  getRol()== 9;}
+
+    public boolean esCreador() {return  getId() == this.id;}
 }

@@ -64,6 +64,22 @@ public class DAOUsuario {
         ps.close();
     }
 
+    public void editarUsuario(Usuario usuarioUpdate) throws SQLException {
+        String sql = "UPDATE usuario SET nombre=?, apellidos=?, rol=?, email=?, contrasena=? WHERE id =?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, usuarioUpdate.getNombre());
+        ps.setString(2, usuarioUpdate.getApellidos());
+        ps.setInt(3, usuarioUpdate.getRol());
+        ps.setString(4, usuarioUpdate.getEmail());
+        ps.setString(5, usuarioUpdate.getHash());
+        ps.setInt(6, usuarioUpdate.getId());
+
+        ps.executeUpdate();
+
+        ps.close();
+    }
+
     public ArrayList<Usuario> listarUsuarios() throws SQLException {
         String sql = "SELECT * FROM usuario ";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -89,6 +105,13 @@ public class DAOUsuario {
 
         json = gson.toJson(this.listarUsuarios());
 
+        return json;
+    }
+
+    public String buscarUsuario(int id) throws SQLException {
+        String json = "";
+        Gson gson = new Gson();
+        json = gson.toJson(this.usuarioPorId(id));
         return json;
     }
 }

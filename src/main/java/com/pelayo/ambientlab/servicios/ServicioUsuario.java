@@ -41,8 +41,14 @@ public class ServicioUsuario {
         usuarioABorrar.borrarUsuario();
     }
 
-
-
+    public void editarUsuario(Usuario creador, Usuario usuarioAEditar) throws HTTPStatusException, SQLException {
+        if (!creador.esAdmin() && creador.getId() != usuarioAEditar.getId()) {
+             throw new HTTPStatusException(403);
+        }
+        int idAEditar = usuarioAEditar.getId();
+        Usuario usuarioModificar = usuarioAEditar;
+        daoUsuario.editarUsuario(usuarioModificar);
+    }
 
 
 }

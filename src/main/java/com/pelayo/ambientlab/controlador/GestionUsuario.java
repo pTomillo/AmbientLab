@@ -34,21 +34,32 @@ public class GestionUsuario extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
 
             chequeo = servicioLogin.chequeoSesion(request, response);
 
-
-            if (chequeo != null && chequeo.esAdmin()) {
-                String json = "";
-                json = this.daoUsuario.llamarJson();
-                System.out.println(json);
-                out.print(json);
+            if (opcion == 1) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                if (chequeo.esAdmin() || chequeo.getId() == id) {
+                    String json = "";
+                    json = this.daoUsuario.buscarUsuario(id);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            } else if (opcion == 0) {
+                if (chequeo != null && chequeo.esAdmin()) {
+                    String json = "";
+                    json = this.daoUsuario.llamarJson();
+                    System.out.println(json);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
             }
-
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
         } catch (SQLException e) {
@@ -85,6 +96,33 @@ public class GestionUsuario extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejar la solicitud PUT aquí
+
+        PrintWriter out = response.getWriter();
+
+        try {
+            Usuario chequeo;
+            chequeo = servicioLogin.chequeoSesion(request, response);
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+            int rol = Integer.parseInt(request.getParameter("rol"));
+            String email = request.getParameter("email");
+            String contrasena = request.getParameter("contrasena");
+
+            String hash = servicioLogin.hashContrasena(contrasena);
+
+            Usuario aEditar =new Usuario(id, nombre, apellidos, rol, email, hash);
+
+            servicioUsuario.editarUsuario(chequeo, aEditar);
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (HTTPStatusException e) {
+            response.sendError(e.getEstatus(), e.getMessage());
+        }
+        response.getWriter().write("Usuario Editado");
     }
 
     @Override
