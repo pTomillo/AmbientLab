@@ -45,7 +45,7 @@ public class GestionUsuario extends HttpServlet {
             if (opcion == 1) { // Listar un Usuario.
                 int id = Integer.parseInt(request.getParameter("id"));
                 // Si se lista un solo usuario se comprueba que el cliente es admin o el usuario a listar y hay una sesion iniciada.
-                if (chequeo != null && chequeo.esAdmin() || chequeo.getId() == id) {
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.getId() == id)) {
                     String json = "";
                     json = this.daoUsuario.buscarUsuario(id);
                     out.print(json);

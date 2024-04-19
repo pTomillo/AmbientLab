@@ -14,7 +14,7 @@ public class ServicioUsuario {
     }
 
 
-    public void crearUsuario(Usuario creador, String nombre, String apellidos, int rol, String email, String contrasena) throws SQLException {
+    public void crearUsuario(Usuario creador, String nombre, String apellidos, int rol, String email, String contrasena) throws SQLException, HTTPStatusException {
         if (creador.getRol() == 1) {
 
             String hash = this.servicioLogin.hashContrasena(contrasena);
@@ -28,7 +28,7 @@ public class ServicioUsuario {
                 throw new RuntimeException(e);
             }
         } else {
-
+            throw new HTTPStatusException(403);
         }
     }
 
