@@ -6,11 +6,13 @@ import com.pelayo.ambientlab.modelo.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class DAOProyecto {
 
     public Connection con = null;
+    private ResultSet rs;
 
     public DAOProyecto() throws SQLException {
         this.con = DBConexion.getConexion();
@@ -55,6 +57,25 @@ public class DAOProyecto {
         return ls;
     }
 
+    public ArrayList<Proyecto> listarProyectosPorUsuario(int id) throws SQLException {
+        String sql = "SELECT proyecto.id, proyecto.titulo, proyecto.descripcion, proyecto.estado, proyecto.fechaInicio, proyecto.fechaFin FROM usuario_proyecto JOIN proyecto ON usuario_proyecto.idProyecto = proyecto.id WHERE usuario_proyecto.idUsuario = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, id);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Proyecto> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Proyecto>();
+            }
+            ls.add(new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6)));
+        }
+        return ls;
+    }
+
     public String buscarProyecto(int id) throws SQLException {
         String json = "";
         Gson gson = new Gson();
@@ -62,7 +83,14 @@ public class DAOProyecto {
         return json;
     }
 
-    private Proyecto proyectoPorID(int id) throws SQLException {
+    public String buscarProyectoPorUsuario(int id) throws SQLException {
+        String json = "";
+        Gson gson = new Gson();
+        json = gson.toJson(this.listarProyectosPorUsuario(id));
+        return json;
+    }
+
+    public Proyecto proyectoPorID(int id) throws SQLException {
         String sql = "SELECT * FROM proyecto WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -72,8 +100,22 @@ public class DAOProyecto {
             return new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6));
         }
         return null;
-
     }
+
+
+    public Proyecto proyectosPorIdUsuario(int id) throws SQLException {
+
+        String sql = "SELECT proyecto.id, proyecto.titulo, proyecto.descripcion, proyecto.estado, proyecto.fechaInicio, proyecto.fechaFin FROM usuario_proyecto JOIN proyecto ON usuario_proyecto.idProyecto = proyecto.id WHERE usuario_proyecto.idUsuario = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6));
+        }
+        return null;
+    }
+
 
     public String jsonProyectos() throws SQLException {
         String json = "";

@@ -7,6 +7,7 @@ import com.pelayo.ambientlab.modelo.Proyecto;
 import com.pelayo.ambientlab.modelo.Usuario;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ServiciosProyecto {
@@ -40,8 +41,6 @@ public class ServiciosProyecto {
         }
     }
 
-
-
     /**
      * Metodo para eliminar un proyecto dado de la Base de Datos.
      * @param creador Creador de la peticion de borrado, debe ser administrador o supervisor.
@@ -56,4 +55,5 @@ public class ServiciosProyecto {
             throw new HTTPStatusException(403);
         }
     }
+
 }

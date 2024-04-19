@@ -65,6 +65,14 @@ public class GestionProyecto extends HttpServlet {
                 } else {
                     throw new HTTPStatusException(403);
                 }
+            } else if (opcion == 3) { // Listar proyecto segun Usuario.
+                if (chequeo != null) {
+                    int id = chequeo.getId();
+                    String json = "";
+                    json = this.daoProyecto.buscarProyectoPorUsuario(id);
+                    out.print(json);
+                }
+
             }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
