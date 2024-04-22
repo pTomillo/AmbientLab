@@ -1,6 +1,7 @@
 package com.pelayo.ambientlab.dao;
 
 import com.google.gson.Gson;
+import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Proyecto;
 import com.pelayo.ambientlab.modelo.Usuario;
 
@@ -78,7 +79,7 @@ public class DAOProyecto {
         return ls;
     }
 
-    public String buscarProyecto(int id) throws SQLException {
+    public String buscarProyecto(int id) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
         json = gson.toJson(this.proyectoPorID(id));
@@ -92,7 +93,7 @@ public class DAOProyecto {
         return json;
     }
 
-    public Proyecto proyectoPorID(int id) throws SQLException {
+    public Proyecto proyectoPorID(int id) throws SQLException, HTTPStatusException {
         String sql = "SELECT * FROM proyecto WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -100,24 +101,10 @@ public class DAOProyecto {
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6));
+        } else {
+            throw new HTTPStatusException(404);
         }
-        return null;
     }
-
-
-    public Proyecto proyectosPorIdUsuario(int id) throws SQLException {
-
-        String sql = "SELECT proyecto.id, proyecto.titulo, proyecto.descripcion, proyecto.estado, proyecto.fechaInicio, proyecto.fechaFin FROM usuario_proyecto JOIN proyecto ON usuario_proyecto.idProyecto = proyecto.id WHERE usuario_proyecto.idUsuario = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
-
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            return new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6));
-        }
-        return null;
-    }
-
 
     public String jsonProyectos() throws SQLException {
         String json = "";

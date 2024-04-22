@@ -48,10 +48,21 @@ public class GestionMuestra extends HttpServlet {
             chequeo = servicioLogin.chequeoSesion(request, response);
             if (opcion == 0) { // Listar todas las muestras.
                 if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor() || chequeo.esRegistro())) {
-
+                    String json = "";
+                    json = this.daoMuestra.listaMuestras();
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
                 }
             } else if (opcion == 1) { // Listar una muestra
-
+                if (chequeo != null) {
+                    int idMuestra = Integer.parseInt(request.getParameter("idMuestra"));
+                    String json = "";
+                    json = this.daoMuestra.listarUnaMuestra(idMuestra);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
+                }
             } else if (opcion == 2) { // Listar muestras por Proyecto
                 if (chequeo != null) {
                     int id = Integer.parseInt(request.getParameter("idProyecto"));

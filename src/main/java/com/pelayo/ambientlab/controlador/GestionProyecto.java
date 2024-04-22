@@ -58,7 +58,7 @@ public class GestionProyecto extends HttpServlet {
 
             } else if (opcion == 1) { // Listar un proyecto.
                 if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
-                    int id = Integer.parseInt(request.getParameter("id"));
+                    int id = Integer.parseInt(request.getParameter("idProyecto"));
                     String json = "";
                     json = this.daoProyecto.buscarProyecto(id);
                     out.print(json);
@@ -134,7 +134,7 @@ public class GestionProyecto extends HttpServlet {
             if (opcion == 0) { // Editar Proyecto.
 
                 // Recogemos los parametros para editar el proyecto.
-                int id = Integer.parseInt(request.getParameter("id"));
+                int id = Integer.parseInt(request.getParameter("idProyecto"));
                 String titulo = request.getParameter("titulo");
                 String descripcion = request.getParameter("descripcion");
                 String estado = request.getParameter("estado");
@@ -152,7 +152,7 @@ public class GestionProyecto extends HttpServlet {
 
             } else if (opcion == 1) { // Actualizar estado de proyecto.
                 // Obtenemos los parametros necesarios para actualizar el estado del proyecto.
-                int id = Integer.parseInt(request.getParameter("id"));
+                int id = Integer.parseInt(request.getParameter("idProyecto"));
                 String estado = request.getParameter("estado");
 
                 // Pasamos los parametros, junto con el usuario de la peticion, a la funcion de la capa de servicios.
@@ -176,7 +176,7 @@ public class GestionProyecto extends HttpServlet {
             chequeo = servicioLogin.chequeoSesion(request, response);
 
             // Recogemos el id del proyecto a eliminar.
-            int id = Integer.parseInt(request.getParameter("id"));
+            int id = Integer.parseInt(request.getParameter("idProyecto"));
 
             // Llamamos a la capa de servicios para lanzar el metodo borrarProyecto.
             serviciosProyecto.eliminarProyecto(chequeo, id);
