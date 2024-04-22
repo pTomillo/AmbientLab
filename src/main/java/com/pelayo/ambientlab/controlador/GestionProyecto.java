@@ -65,7 +65,7 @@ public class GestionProyecto extends HttpServlet {
                 } else {
                     throw new HTTPStatusException(403);
                 }
-            } else if (opcion == 3) { // Listar proyecto segun Usuario.
+            } else if (opcion == 3) { // Listar proyectos segun Usuario.
                 if (chequeo != null) {
                     int id = chequeo.getId();
                     String json = "";
@@ -121,15 +121,45 @@ public class GestionProyecto extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicitud doPut.
 
+        // Obtenemos la opcion desde el cliente
+        int opcion = Integer.parseInt(request.getParameter("op"));
+
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            if (opcion == 0) { // Editar Proyecto.
+
+                // Recogemos los parametros para editar el proyecto.
+                int id = Integer.parseInt(request.getParameter("id"));
+                String titulo = request.getParameter("titulo");
+                String descripcion = request.getParameter("descripcion");
+                String estado = request.getParameter("estado");
+                String fechaIni = request.getParameter("fechaInicio");
+                String fechaFin = request.getParameter("fechaFin");
+
+                // Dado que ambas fechas vienen en formato String tenemos que parsear al objeto Date.
+
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                Date fechaInicio = formatoFecha.parse(fechaIni);
+                Date fechaFinal = formatoFecha.parse(fechaFin);
+
+                // Pasamos todos los parametros recogidos y formateados, junto al usuario, al metodo crearProyecto.
+                serviciosProyecto.editarProyecto(chequeo, id, titulo, descripcion, estado, fechaInicio, fechaFinal);
+
+            } else if (opcion == 1) { // Actualizar estado de proyecto.
+                // Obtenemos los parametros necesarios para actualizar el estado del proyecto.
+                int id = Integer.parseInt(request.getParameter("id"));
+                String estado = request.getParameter("estado");
+
+                // Pasamos los parametros, junto con el usuario de la peticion, a la funcion de la capa de servicios.
+                serviciosProyecto.actualizarEstado(chequeo, id, estado);
+            }
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
@@ -155,6 +185,4 @@ public class GestionProyecto extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-
-
 }

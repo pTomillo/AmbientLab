@@ -6,7 +6,6 @@ import com.pelayo.ambientlab.modelo.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class DAOProyecto {
@@ -122,5 +121,31 @@ public class DAOProyecto {
         Gson gson = new Gson();
         json = gson.toJson(this.listarProyectos());
         return json;
+    }
+
+    public void editarProyecto(int id, String titulo, String descripcion, String estado, java.util.Date fechaInicio, java.util.Date fechaFinal) throws SQLException {
+        String sql = "UPDATE proyecto SET titulo=?, descripcion=?, estado=?, fechaInicio=?, fechaFin=? WHERE id=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, titulo);
+        ps.setString(2, descripcion);
+        ps.setString(3, estado);
+        ps.setDate(4, new java.sql.Date(fechaInicio.getTime()));
+        ps.setDate(5, new java.sql.Date(fechaFinal.getTime()));
+        ps.setInt(6, id);
+
+        ps.executeUpdate();
+        ps.close();
+    }
+
+    public void actualizarEstado(int id, String estado) throws SQLException {
+        String sql = "UPDATE proyecto SET estado=? WHERE id=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, estado);
+        ps.setInt(2, id);
+
+        ps.executeUpdate();
+        ps.close();
     }
 }

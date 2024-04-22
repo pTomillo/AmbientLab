@@ -7,7 +7,6 @@ import com.pelayo.ambientlab.modelo.Proyecto;
 import com.pelayo.ambientlab.modelo.Usuario;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ServiciosProyecto {
@@ -56,4 +55,40 @@ public class ServiciosProyecto {
         }
     }
 
+    /**
+     * Funcion para editar un proyecto dado.
+     * @param chequeo Usuario con la inicion iniciada y que crea la peticion.
+     * @param id Id del proyecto a editar.
+     * @param titulo Titulo del proyecto a editar.
+     * @param descripcion Descripcion del proyecto a editar.
+     * @param estado Estado del proyecto a editar.
+     * @param fechaInicio Fecha de Inicio del proyecto a editar.
+     * @param fechaFinal Fecha de Fin del proyecto a editar.
+     * @throws HTTPStatusException
+     * @throws SQLException
+     */
+    public void editarProyecto(Usuario chequeo, int id, String titulo, String descripcion, String estado, Date fechaInicio, Date fechaFinal) throws HTTPStatusException, SQLException {
+        if (chequeo.esAdmin() || chequeo.esSupervisor()) {
+            daoProyecto.editarProyecto(id, titulo, descripcion, estado, fechaInicio, fechaFinal);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
+
+    /**
+     * Funcion para actualizar solamente el estado de un proyecto.
+     * @param chequeo Usuaro que crea la peticion de actualizacion.
+     * @param id Id del proyecto en el que actualizar el estado.
+     * @param estado Estado actualizado.
+     * @throws HTTPStatusException
+     * @throws SQLException
+     */
+
+    public void actualizarEstado(Usuario chequeo, int id, String estado) throws HTTPStatusException, SQLException {
+        if (chequeo.esAdmin() || chequeo.esSupervisor()) {
+            daoProyecto.actualizarEstado(id, estado);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
 }
