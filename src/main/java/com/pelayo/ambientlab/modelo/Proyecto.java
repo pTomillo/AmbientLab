@@ -14,6 +14,9 @@ public class Proyecto {
     // Creamos los metodos constructores necesarios.
 
 
+    public Proyecto() {
+    }
+
     public Proyecto(int id, String titulo, String descrripcion, String estado, Date fechaInicio, Date fechaFin) {
         this.id = id;
         this.titulo = titulo;
