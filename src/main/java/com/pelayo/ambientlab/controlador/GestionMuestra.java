@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,9 @@ public class GestionMuestra extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo peticion GET
+        PrintWriter out = response.getWriter();
+        // Recogemos la opcion enviada desde el cliente.
+
 
         try {
             Usuario chequeo;
@@ -117,6 +121,11 @@ public class GestionMuestra extends HttpServlet {
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            // Recogemos desde el cliente el Id de la muestra a eliminar.
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            // Llamos a la capa de servicios muestra para lanzar el metodo borrarMuestra.
+            serviciosMuestra.borrarMuestra(chequeo, id);
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());

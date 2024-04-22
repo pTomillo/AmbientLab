@@ -37,4 +37,18 @@ public class ServiciosMuestra {
             throw new HTTPStatusException(403);
         }
     }
+
+    /**
+     * Metodo para eliminar una muestra de la BD.
+     * @param chequeo Usuario que lanza la peticion para eliminar la muestra.
+     * @param id Identificador de la muestra a eliminar.
+     */
+    public void borrarMuestra(Usuario chequeo, int id) throws HTTPStatusException, SQLException {
+        // Comprobamos que el usuario que lanza la peticion sea Admin, Supevisor o Registro.
+        if (chequeo.esAdmin() || chequeo.esSupervisor() || chequeo.esRegistro()) {
+            daoMuestra.eliminarMuestra(id);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
 }

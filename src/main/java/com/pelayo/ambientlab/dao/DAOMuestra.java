@@ -30,4 +30,13 @@ public class DAOMuestra {
     }
 
 
+    public void eliminarMuestra(int id) throws SQLException {
+        String sql = "DELETE FROM muestra WHERE id=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, id);
+
+        ps.executeUpdate();
+        ps.close();
+    }
 }

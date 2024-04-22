@@ -37,6 +37,7 @@ public class DAOProyecto {
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, idProyecto);
         ps.executeUpdate();
+        ps.close();
     }
 
     public ArrayList<Proyecto> listarProyectos() throws SQLException {
