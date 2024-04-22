@@ -74,6 +74,7 @@ public class GestionProyecto extends HttpServlet {
                 } else {
                     throw new HTTPStatusException(401);
                 }
+            } else if (opcion == 4 ) { // Listatr Usuarios segun Proyecto
 
             }
         } catch (HTTPStatusException e) {
