@@ -3,6 +3,7 @@ package com.pelayo.ambientlab.dao;
 import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Muestra;
 import com.google.gson.Gson;
+import jdk.jshell.spi.SPIResolutionException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -115,5 +116,32 @@ public class DAOMuestra {
         } else {
             throw new HTTPStatusException(404);
         }
+    }
+
+    public void editarMuestra(Muestra aEditar) throws SQLException {
+        String sql = "UPDATE muestra SET referencia = ?, tipo = ?, origen = ?, estado = ?, fechaRegistro = ?, idProyecto = ? WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, aEditar.getReferencia());
+        ps.setString(2, aEditar.getTipo());
+        ps.setString(3, aEditar.getOrigen());
+        ps.setString(4, aEditar.getEstado());
+        ps.setDate(5, new java.sql.Date(aEditar.getFechaRegistro().getTime()));
+        ps.setInt(6, aEditar.getIdProyecto());
+        ps.setInt(7, aEditar.getId());
+
+        ps.executeUpdate();
+        ps.close();
+    }
+
+    public void actualizarEstado(int idMuestra, String estado) throws SQLException {
+        String sql = "UPDATE muestra SET estado = ? WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, estado);
+        ps.setInt(2, idMuestra);
+
+        ps.executeUpdate();
+        ps.close();
     }
 }

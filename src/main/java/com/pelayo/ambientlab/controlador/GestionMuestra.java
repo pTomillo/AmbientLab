@@ -122,17 +122,49 @@ public class GestionMuestra extends HttpServlet {
         // Manejo peticion PUT
 
         // Obtenemos la opcion desde el cliente.
-
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            
+            if (opcion == 0) { // Editar Muestra
+
+                // Recogemos los parametros para editar la muestra.
+                int idMuestra = Integer.parseInt(request.getParameter("idMuestra"));
+
+                String referencia = request.getParameter("referencia");
+                String tipo = request.getParameter("tipo");
+                String origen = request.getParameter("origen");
+                String estado = request.getParameter("estado");
+                int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                String fechaReg = request.getParameter("fechaRegistro");
+
+                // La fecha de registro es recogida y adecuadamente parseada.
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                Date fecharegistro = formatoFecha.parse(fechaReg);
+
+                // Llamamos al metodo editarMuestra.
+
+                serviciosMuestra.editarMuestra(chequeo, idMuestra, referencia, tipo, origen, estado, fecharegistro, idProyecto);
+
+                
+            } else if (opcion == 1) { // Actualizar estado de la muestra.
+                // Recogemos los parametros para actualizar el estado de la muestra.
+                int idMuestra = Integer.parseInt(request.getParameter("idMuestra"));
+                String estado = request.getParameter("estado");
+
+                // Llamamos a la capa servicios para lanzar el metodo de actualizar estado.
+                serviciosMuestra.actualizarEstadoMuestra(chequeo, idMuestra, estado);
+                
+            }
+
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new RuntimeException(e);
         }
 
