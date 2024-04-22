@@ -8,6 +8,7 @@ import com.pelayo.ambientlab.modelo.Usuario;
 import com.pelayo.ambientlab.servicios.ServicioLogin;
 import com.pelayo.ambientlab.servicios.ServicioUsuario;
 import com.pelayo.ambientlab.servicios.ServiciosProyecto;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -75,7 +76,14 @@ public class GestionProyecto extends HttpServlet {
                     throw new HTTPStatusException(401);
                 }
             } else if (opcion == 4 ) { // Listatr Usuarios segun Proyecto
-
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
+                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                    String json = "";
+                    json = this.daoProyecto.jsonUsuarios(idProyecto);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
             }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());

@@ -138,4 +138,30 @@ public class DAOProyecto {
         ps.executeUpdate();
         ps.close();
     }
+
+    public String jsonUsuarios(int idProyecto) throws SQLException {
+        String json = "";
+        Gson gson = new Gson();
+        json = gson.toJson(this.listarUsuarios(idProyecto));
+        return json;
+    }
+
+    public ArrayList<Usuario> listarUsuarios(int idProyecto) throws SQLException {
+        String sql = "SELECT usuario.id, usuario.nombre, usuario.apellidos, usuario.rol, usuario.email FROM usuario_proyecto JOIN usuario ON usuario_proyecto.idUsuario = usuario.id WHERE usuario_proyecto.idProyecto = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, idProyecto);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Usuario> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Usuario>();
+            }
+            ls.add(new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)));
+        }
+        return ls;
+    }
 }
