@@ -1,7 +1,6 @@
 package com.pelayo.ambientlab.servicios;
 
 import com.pelayo.ambientlab.dao.DAOMuestra;
-import com.pelayo.ambientlab.dao.DAOUsuario;
 import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Muestra;
 import com.pelayo.ambientlab.modelo.Usuario;
@@ -32,7 +31,7 @@ public class ServiciosMuestra {
             // Creamos el objeto Muestra para pasarselo a la fucion de registro en la BD.
             Muestra aRegistrar = new Muestra(referencia, tipo, origen, estado, fecharegistro, idProyecto);
             // Llamamos al DAOMuestra para guardarla en la BD.
-            daoMuestra.registrarMustra(aRegistrar);
+            daoMuestra.registrarMuestra(aRegistrar);
         } else {
             throw new HTTPStatusException(403);
         }

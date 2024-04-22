@@ -1,5 +1,6 @@
 package com.pelayo.ambientlab.controlador;
 
+import com.pelayo.ambientlab.dao.DAOMuestra;
 import com.pelayo.ambientlab.dao.DAOUsuario;
 import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Muestra;
@@ -25,6 +26,8 @@ import java.util.Date;
 public class GestionMuestra extends HttpServlet {
 
     DAOUsuario daoUsuario = new DAOUsuario();
+
+    DAOMuestra daoMuestra = new DAOMuestra();
     ServicioLogin servicioLogin = new ServicioLogin();
     ServicioUsuario servicioUsuario = new ServicioUsuario();
 
@@ -38,13 +41,27 @@ public class GestionMuestra extends HttpServlet {
         // Manejo peticion GET
         PrintWriter out = response.getWriter();
         // Recogemos la opcion enviada desde el cliente.
-
-
+        int opcion = Integer.parseInt(request.getParameter("op"));
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
+            if (opcion == 0) { // Listar todas las muestras.
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor() || chequeo.esRegistro())) {
 
+                }
+            } else if (opcion == 1) { // Listar una muestra
+
+            } else if (opcion == 2) { // Listar muestras por Proyecto
+                if (chequeo != null) {
+                    int id = Integer.parseInt(request.getParameter("idProyecto"));
+                    String json = "";
+                    json = this.daoMuestra.listarMuestrasPorProyecto(id);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
+                }
+            }
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
@@ -100,8 +117,6 @@ public class GestionMuestra extends HttpServlet {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
-
-
 
 
         } catch (HTTPStatusException e) {

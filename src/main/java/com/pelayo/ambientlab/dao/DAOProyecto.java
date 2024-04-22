@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.pelayo.ambientlab.modelo.Proyecto;
 import com.pelayo.ambientlab.modelo.Usuario;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.*;
 import java.util.ArrayList;
 

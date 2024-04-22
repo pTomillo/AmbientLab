@@ -71,6 +71,8 @@ public class GestionProyecto extends HttpServlet {
                     String json = "";
                     json = this.daoProyecto.buscarProyectoPorUsuario(id);
                     out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
                 }
 
             }
