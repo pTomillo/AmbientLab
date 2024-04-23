@@ -166,7 +166,6 @@ public class GestionAnalisis extends HttpServlet {
                 // Llamamos a la capa de serviciosAnalisis para lanzar el metodo actualiarEstado.
                 serviciosAnalisis.actualizarEstado(chequeo, estado, idAnalisis);
             }
-
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
         } catch (SQLException | ParseException e) {
