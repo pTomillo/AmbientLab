@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,13 +33,51 @@ public class GestionAnalisis extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo de la peticion doGet
+        PrintWriter out = response.getWriter();
+        // Recogemos la opcion enviada desde el cliente.
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
-
+            if (opcion == 0) { // Listar todos los Analisis.
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor() || chequeo.esAnalista())) {
+                    String json = "";
+                    json = this.daoAnalisis.listarAnalisis();
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            } else if (opcion == 1) { // Listar un Analisis.
+                if (chequeo != null) {
+                    int idAnalisis = Integer.parseInt(request.getParameter("idAnalisis"));
+                    String json = "";
+                    json = this.daoAnalisis.listarUnAnalisis(idAnalisis);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
+                }
+            } else if (opcion == 2) { // Listar Analisis por proyecto
+                if (chequeo != null) {
+                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                    String json = "";
+                    json = this.daoAnalisis.analisisPorProyecto(idProyecto);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
+                }
+            } else if (opcion == 3) { // Listar Analisis por Muestra
+                if (chequeo != null) {
+                    int idMuestra = Integer.parseInt(request.getParameter("idMuestra"));
+                    String json = "";
+                    json = this.daoAnalisis.analisisPorMuestra(idMuestra);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
+                }
+            }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
         } catch (SQLException e) {

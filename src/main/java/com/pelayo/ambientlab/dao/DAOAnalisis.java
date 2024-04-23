@@ -1,11 +1,10 @@
 package com.pelayo.ambientlab.dao;
 
+import com.google.gson.Gson;
 import com.pelayo.ambientlab.modelo.Analisis;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class DAOAnalisis {
     public Connection con = null;
@@ -40,5 +39,40 @@ public class DAOAnalisis {
 
         ps.executeUpdate();
         ps.close();
+    }
+
+    public String listarAnalisis() throws SQLException {
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT * FROM analisis";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Analisis> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Analisis>();
+            }
+            ls.add(new Analisis(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8)));
+        }
+
+
+        json = gson.toJson(ls);
+        return json;
+    }
+
+    public String listarUnAnalisis(int idAnalisis) {
+        return null;
+    }
+
+    public String analisisPorProyecto(int idProyecto) {
+        return null;
+    }
+
+    public String analisisPorMuestra(int idMuestra) {
+        return null;
     }
 }
