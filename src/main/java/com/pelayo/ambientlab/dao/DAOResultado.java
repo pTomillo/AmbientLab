@@ -1,10 +1,15 @@
 package com.pelayo.ambientlab.dao;
 
+import com.google.gson.Gson;
+import com.pelayo.ambientlab.excepciones.HTTPStatusException;
+import com.pelayo.ambientlab.modelo.Analisis;
 import com.pelayo.ambientlab.modelo.Resultado;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DAOResultado {
 
@@ -34,5 +39,91 @@ public class DAOResultado {
 
         ps.executeUpdate();
         ps.close();
+    }
+
+    public String listarResultados() throws SQLException, HTTPStatusException {
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT * FROM resultado";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Resultado> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Resultado>();
+            }
+            ls.add(new Resultado(rs.getInt(1), rs.getString(2), rs.getFloat(3), rs.getString(4), rs.getInt(5)));
+        }
+
+        if (ls == null) {
+            throw new HTTPStatusException(404);
+        }
+
+
+        json = gson.toJson(ls);
+
+        ps.close();
+        rs.close();
+
+        return json;
+    }
+
+    public String listarResultado(int idResultado) throws SQLException, HTTPStatusException {
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT * FROM resultado WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1 , idResultado);
+
+        ResultSet rs = ps.executeQuery();
+
+        Resultado aListar;
+        if (rs.next()) {
+            aListar = new Resultado(rs.getInt(1), rs.getString(2), rs.getFloat(3), rs.getString(4), rs.getInt(5));
+        } else {
+            throw new HTTPStatusException(404);
+        }
+
+        json = gson.toJson(aListar);
+        ps.close();
+        rs.close();
+        return json;
+    }
+
+    public String listarResultadoPorAnalisis(int idAnalisis) throws SQLException, HTTPStatusException {
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT * FROM resultado WHERE idAnalisis = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idAnalisis);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Resultado> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Resultado>();
+            }
+            ls.add(new Resultado(rs.getInt(1), rs.getString(2), rs.getFloat(3), rs.getString(4), rs.getInt(5)));
+        }
+
+        if (ls == null) {
+            throw new HTTPStatusException(404);
+        }
+
+
+        json = gson.toJson(ls);
+
+        ps.close();
+        rs.close();
+
+        return json;
     }
 }
