@@ -100,11 +100,25 @@ public class GestionResultado extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Manejo de la peticion doPut.
+
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            // Recogemos los parametros para editar el resultado desde el cliente.
+            String parametro = request.getParameter("parametro");
+            float valor = Float.parseFloat(request.getParameter("valor"));
+            String unidad = request.getParameter("unidad");
+            int idAnalisis = Integer.parseInt(request.getParameter("idAnalisis"));
+
+            // Recogemos el id del resultado a editar.
+            int idResultado = Integer.parseInt(request.getParameter("idResultado"));
+
+            // Llamamos a la capa serviciosResultado para lanzar el metodo editar resultado.
+
+            serviciosResultado.editarResultado(chequeo, idResultado, parametro, valor, unidad, idAnalisis);
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());

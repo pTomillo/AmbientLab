@@ -41,6 +41,22 @@ public class DAOResultado {
         ps.close();
     }
 
+
+    public void editarResultado(Resultado aEditar) throws SQLException {
+        String sql = "UPDATE resultado SET parametro = ?, valor = ?, unidad = ?, idAnalisis = ? WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, aEditar.getParametro());
+        ps.setFloat(2, aEditar.getValor());
+        ps.setString(3, aEditar.getUnidad());
+        ps.setInt(4, aEditar.getIdAnalisis());
+        ps.setInt(5, aEditar.getId());
+
+        ps.executeUpdate();
+        ps.close();
+
+    }
+
     public String listarResultados() throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -126,4 +142,5 @@ public class DAOResultado {
 
         return json;
     }
+
 }
