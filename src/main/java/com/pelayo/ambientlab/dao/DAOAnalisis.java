@@ -31,4 +31,14 @@ public class DAOAnalisis {
         ps.close();
 
     }
+
+    public void borrarAnalisis(int idAnalisis) throws SQLException {
+        String sql = "DELETE FROM analisis WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, idAnalisis);
+
+        ps.executeUpdate();
+        ps.close();
+    }
 }

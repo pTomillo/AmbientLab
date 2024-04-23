@@ -27,11 +27,29 @@ public class ServiciosAnalisis {
      * @throws HTTPStatusException
      */
     public void crearAnalisis(Usuario chequeo, String observaciones, String tipo, Date fechaAnalisis, String estado, int idMuestra, int idProyecto) throws HTTPStatusException, SQLException {
+        // Comprobamos que el usuario que lanza la peticion sea Admin, Supervisor o Analista.
         if (chequeo != null && (chequeo.esAdmin()) || chequeo.esSupervisor() || chequeo.esAnalista()) {
             // Creamos el objeto Analisis que pasaremos al DAOAnalisis para su posterior insercion en la base de datos.
             Analisis aCrear = new Analisis(observaciones, tipo, fechaAnalisis, estado, idMuestra, chequeo.getId(), idProyecto); // Guardamos tambien el id del usuario que crea el analisis.
             // Llamamos a la capa de DAOAnalisis para lanzar el metodo para registrar el analisis en la BD.
             daoAnalisis.crearAnalisis(aCrear);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
+
+    /**
+     * Funcion para eliminar el registro de un analisis de la BD
+     * @param chequeo Usuario que lanza la peticion de eliminar.
+     * @param idAnalisis Id del analisis que se elimina.
+     * @throws HTTPStatusException
+     * @throws SQLException
+     */
+    public void eliminarAnalisis(Usuario chequeo, int idAnalisis) throws HTTPStatusException, SQLException {
+        // Comprobamos que el usuario que lanza la peticion sea Admin, Supervisor o Analista.
+        if (chequeo != null && (chequeo.esAdmin()) || chequeo.esSupervisor() || chequeo.esAnalista()) {
+            // Si es correcto lanzamos la peticion de elminar al DAOAnalisis.
+            daoAnalisis.borrarAnalisis(idAnalisis);
         } else {
             throw new HTTPStatusException(403);
         }

@@ -106,6 +106,11 @@ public class GestionAnalisis extends HttpServlet {
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            // Recogemos el Id del analisis a eliminar.
+            int idAnalisis = Integer.parseInt(request.getParameter("idAnalisis"));
+
+            // Llamamos a la capa servicios para lanzar la funcion eliminarAnalisis.
+            serviciosAnalisis.eliminarAnalisis(chequeo, idAnalisis);
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
