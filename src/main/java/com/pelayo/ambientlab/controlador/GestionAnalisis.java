@@ -77,6 +77,15 @@ public class GestionAnalisis extends HttpServlet {
                 } else {
                     throw new HTTPStatusException(401);
                 }
+            } else if (opcion == 4) { // Listar Analisis por Usuario
+                if (chequeo != null) {
+                    int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                    String json = "";
+                    json = this.daoAnalisis.analisisPorUsuario(idUsuario);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(401);
+                }
             }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
@@ -122,16 +131,45 @@ public class GestionAnalisis extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo de la peticion doPut
+        // Recogemos la opcion enviada desde el cliente
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            if (opcion == 0) { // Editar un analisis.
+                // Recogemos los parametros desde el cliente para editar el Analisis.
+                String observaciones = request.getParameter("observaciones");
+                String tipo = request.getParameter("tipo");
+
+                // La fecha tiene que ser correctamente parseada a un objeto Date.
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                Date fecharAnalisis = formatoFecha.parse(request.getParameter("fechaAnalisis"));
+
+                String estado = request.getParameter("estado");
+
+                int idMuestra = Integer.parseInt(request.getParameter("idMuestra"));
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                int idAnalisis = Integer.parseInt(request.getParameter("idAnalisis"));
+
+
+                serviciosAnalisis.editarAnalisis(chequeo, observaciones, tipo, fecharAnalisis, estado, idMuestra, idProyecto, idUsuario, idAnalisis);
+
+            } else if (opcion == 1) { // Actualizar estado de un analisis.
+                // Recogemos los parametros desde el cliente para actualizar el estado del Analisis.
+                String estado = request.getParameter("estado");
+                int idAnalisis = Integer.parseInt(request.getParameter("idAnalisis"));
+
+                // Llamamos a la capa de serviciosAnalisis para lanzar el metodo actualiarEstado.
+                serviciosAnalisis.actualizarEstado(chequeo, estado, idAnalisis);
+            }
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
