@@ -38,11 +38,41 @@ public class ServicioTarea {
         }
     }
 
+    /**
+     * Metodo para borrar una tarea.
+     * @param chequeo Usuario que lanza la peticion, debe de ser Admin o Supervisor.
+     * @param idTarea
+     * @throws HTTPStatusException
+     * @throws SQLException
+     */
     public void borrarTarea(Usuario chequeo, int idTarea) throws HTTPStatusException, SQLException {
         // Comprobamos que el usuario que lanza la peticion sea Admin o Supervisor.
         if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
             // Si el usuario es correcto llamamos al DAOTarea.
             daoTarea.borrarTarea(idTarea);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
+
+    /**
+     * Metodo para editar una tarea ya creada.
+     * @param chequeo Usuario que lanza la peticion, debe de ser Admin o Supervisor.
+     * @param titulo titulo editado.
+     * @param observaciones observaciones editadas.
+     * @param estado estado editado.
+     * @param idProyecto Id Proyecto editado.
+     * @param idTarea Id tarea a editar.
+     * @throws HTTPStatusException
+     * @throws SQLException
+     */
+    public void editarTarea(Usuario chequeo, String titulo, String observaciones, String estado, int idProyecto, int idUsuario, int idTarea) throws HTTPStatusException, SQLException {
+        // Comprobamos que el usuario que lanza la peticion sea Admin o Supervisor.
+        if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
+            // Creamos el objeto tarea.
+            Tarea aEditar = new Tarea( titulo, observaciones, estado, idProyecto, idUsuario);
+            // Llamamos al DAOTarea para guardar la tarea en a BD.
+            daoTarea.editarTarea(aEditar, idTarea);
         } else {
             throw new HTTPStatusException(403);
         }

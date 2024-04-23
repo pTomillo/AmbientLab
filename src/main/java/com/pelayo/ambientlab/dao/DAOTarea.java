@@ -39,4 +39,20 @@ public class DAOTarea {
         ps.close();
 
     }
+
+    public void editarTarea(Tarea aEditar, int idTarea) throws SQLException {
+        String sql = "UPDATE tarea SET titulo=?, observaciones=?, estado=?, idProyecto=?, idUsuario = ? WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, aEditar.getTitulo());
+        ps.setString(2, aEditar.getObservaciones());
+        ps.setString(3, aEditar.getEstado());
+        ps.setInt(4, aEditar.getIdProyecto());
+        ps.setInt(5, aEditar.getIdUsuario());
+        ps.setInt(6, idTarea);
+
+        ps.executeUpdate();
+        ps.close();
+
+    }
 }

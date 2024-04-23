@@ -72,11 +72,33 @@ public class GestionTarea extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicutd doPut.
+        // Recogemos la opcion desde el cliente.
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
+
+            if (opcion == 0) { // Editar tarea.
+                // Recogemos los parametros para crear la tarea.
+                String titulo = request.getParameter("titulo");
+                String observaciones = request.getParameter("observaciones");
+                String estado = request.getParameter("estado");
+                int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+
+                // Recogemos el id de la tarea a editar.
+                int idTarea = Integer.parseInt(request.getParameter("idTarea"));
+
+                // Llamamos a la capa servicios para lanzar el metodo editarTarea.
+                servicioTarea.editarTarea(chequeo, titulo, observaciones, estado, idProyecto, idUsuario, idTarea);
+
+            } else if (opcion == 1) { // Actualizar estado de tarea.
+
+            }
+
+
 
 
         } catch (HTTPStatusException e) {
