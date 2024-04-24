@@ -1,6 +1,8 @@
 package com.pelayo.ambientlab.dao;
 
 import com.google.gson.Gson;
+import com.pelayo.ambientlab.excepciones.HTTPStatusException;
+import com.pelayo.ambientlab.modelo.Analisis;
 import com.pelayo.ambientlab.modelo.Usuario;
 
 import java.sql.Connection;
@@ -129,8 +131,12 @@ public class DAOUsuario {
         ps.close();
     }
 
-    public ArrayList<Usuario> listarUsuarios() throws SQLException {
-        String sql = "SELECT * FROM usuario ";
+
+    public String listarUsuarios() throws SQLException, HTTPStatusException {
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT * FROM usuario";
         PreparedStatement ps = con.prepareStatement(sql);
 
         ResultSet rs = ps.executeQuery();
@@ -143,24 +149,40 @@ public class DAOUsuario {
             }
             ls.add(new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6)));
         }
-        return ls;
-    }
 
-    public String llamarJson() throws SQLException {
-        String json = "";
-
-        Gson gson = new Gson();
+        if (ls == null) {
+            throw new HTTPStatusException(404);
+        }
 
 
-        json = gson.toJson(this.listarUsuarios());
+        json = gson.toJson(ls);
+
+        ps.close();
+        rs.close();
 
         return json;
     }
 
-    public String buscarUsuario(int id) throws SQLException {
+    public String buscarUsuario(int idUsuario) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
-        json = gson.toJson(this.usuarioPorId(id));
+
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1 , idUsuario);
+
+        ResultSet rs = ps.executeQuery();
+
+        Usuario aListar;
+        if (rs.next()) {
+            aListar = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6));
+        } else {
+            throw new HTTPStatusException(404);
+        }
+
+        json = gson.toJson(aListar);
+        ps.close();
+        rs.close();
         return json;
     }
 

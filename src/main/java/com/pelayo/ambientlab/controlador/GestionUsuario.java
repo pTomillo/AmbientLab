@@ -56,8 +56,7 @@ public class GestionUsuario extends HttpServlet {
                 // Si se listan todos los usuarios hace falta comprobar que la sesion sea valida y de  un administrador.
                 if (chequeo != null && chequeo.esAdmin()) {
                     String json = "";
-                    json = this.daoUsuario.llamarJson();
-                    System.out.println(json);
+                    json = this.daoUsuario.listarUsuarios();
                     out.print(json);
                 } else {
                     // Si falla lanzamos un error 403 "Acceso no permitido".
