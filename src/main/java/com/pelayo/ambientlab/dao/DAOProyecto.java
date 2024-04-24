@@ -43,7 +43,10 @@ public class DAOProyecto {
         ps.close();
     }
 
-    public ArrayList<Proyecto> listarProyectos() throws SQLException {
+    public String listarProyectos1() throws SQLException, HTTPStatusException {
+        String json = "";
+        Gson gson = new Gson();
+
         String sql = "SELECT * FROM proyecto ";
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -57,14 +60,51 @@ public class DAOProyecto {
             }
             ls.add(new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6)));
         }
-        return ls;
+
+        if (ls == null) {
+            throw new HTTPStatusException(404);
+        }
+
+
+        json = gson.toJson(ls);
+
+        ps.close();
+        rs.close();
+
+        return json;
     }
 
-    public ArrayList<Proyecto> listarProyectosPorUsuario(int id) throws SQLException {
+    public String buscarProyecto1(int idProyecto) throws HTTPStatusException, SQLException {
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT * FROM proyecto WHERE id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1 , idProyecto);
+
+        ResultSet rs = ps.executeQuery();
+
+        Proyecto aListar;
+        if (rs.next()) {
+            aListar = new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6));
+        } else {
+            throw new HTTPStatusException(404);
+        }
+
+        json = gson.toJson(aListar);
+        ps.close();
+        rs.close();
+        return json;
+    }
+
+    public String buscarProyectoPorUsuario1(int idUsuario) throws SQLException, HTTPStatusException {
+        String json = "";
+        Gson gson = new Gson();
+
         String sql = "SELECT proyecto.id, proyecto.titulo, proyecto.descripcion, proyecto.estado, proyecto.fechaInicio, proyecto.fechaFin FROM usuario_proyecto JOIN proyecto ON usuario_proyecto.idProyecto = proyecto.id WHERE usuario_proyecto.idUsuario = ?";
         PreparedStatement ps = con.prepareStatement(sql);
 
-        ps.setInt(1, id);
+        ps.setInt(1, idUsuario);
 
         ResultSet rs = ps.executeQuery();
 
@@ -76,42 +116,53 @@ public class DAOProyecto {
             }
             ls.add(new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6)));
         }
-        return ls;
-    }
 
-    public String buscarProyecto(int id) throws SQLException, HTTPStatusException {
-        String json = "";
-        Gson gson = new Gson();
-        json = gson.toJson(this.proyectoPorID(id));
-        return json;
-    }
-
-    public String buscarProyectoPorUsuario(int id) throws SQLException {
-        String json = "";
-        Gson gson = new Gson();
-        json = gson.toJson(this.listarProyectosPorUsuario(id));
-        return json;
-    }
-
-    public Proyecto proyectoPorID(int id) throws SQLException, HTTPStatusException {
-        String sql = "SELECT * FROM proyecto WHERE id = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
-
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return new Proyecto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6));
-        } else {
+        if (ls == null) {
             throw new HTTPStatusException(404);
         }
-    }
 
-    public String jsonProyectos() throws SQLException {
-        String json = "";
-        Gson gson = new Gson();
-        json = gson.toJson(this.listarProyectos());
+
+        json = gson.toJson(ls);
+
+        ps.close();
+        rs.close();
+
         return json;
     }
+
+    public String usuariosSegunProyecto(int idProyecto) throws SQLException, HTTPStatusException {
+
+        String json = "";
+        Gson gson = new Gson();
+
+        String sql = "SELECT usuario.id, usuario.nombre, usuario.apellidos, usuario.rol, usuario.email FROM usuario_proyecto JOIN usuario ON usuario_proyecto.idUsuario = usuario.id WHERE usuario_proyecto.idProyecto = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idProyecto);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Usuario> ls = null;
+
+        while (rs.next()) {
+            if (ls == null) {
+                ls = new ArrayList<Usuario>();
+            }
+            ls.add(new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)));
+        }
+
+        if (ls == null) {
+            throw new HTTPStatusException(404);
+        }
+
+
+        json = gson.toJson(ls);
+
+        ps.close();
+        rs.close();
+
+        return json;
+    }
+
 
     public void editarProyecto(int id, String titulo, String descripcion, String estado, java.util.Date fechaInicio, java.util.Date fechaFinal) throws SQLException {
         String sql = "UPDATE proyecto SET titulo=?, descripcion=?, estado=?, fechaInicio=?, fechaFin=? WHERE id=?";
@@ -137,31 +188,5 @@ public class DAOProyecto {
 
         ps.executeUpdate();
         ps.close();
-    }
-
-    public String jsonUsuarios(int idProyecto) throws SQLException {
-        String json = "";
-        Gson gson = new Gson();
-        json = gson.toJson(this.listarUsuarios(idProyecto));
-        return json;
-    }
-
-    public ArrayList<Usuario> listarUsuarios(int idProyecto) throws SQLException {
-        String sql = "SELECT usuario.id, usuario.nombre, usuario.apellidos, usuario.rol, usuario.email FROM usuario_proyecto JOIN usuario ON usuario_proyecto.idUsuario = usuario.id WHERE usuario_proyecto.idProyecto = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
-
-        ps.setInt(1, idProyecto);
-
-        ResultSet rs = ps.executeQuery();
-
-        ArrayList<Usuario> ls = null;
-
-        while (rs.next()) {
-            if (ls == null) {
-                ls = new ArrayList<Usuario>();
-            }
-            ls.add(new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)));
-        }
-        return ls;
     }
 }

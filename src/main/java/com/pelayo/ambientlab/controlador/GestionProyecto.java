@@ -51,17 +51,16 @@ public class GestionProyecto extends HttpServlet {
             if (opcion == 0) { // Listar todos los proyectos.
                 if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
                     String json = "";
-                    json = this.daoProyecto.jsonProyectos();
+                    json = this.daoProyecto.listarProyectos1();
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(403);
                 }
-
             } else if (opcion == 1) { // Listar un proyecto.
                 if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
                     int id = Integer.parseInt(request.getParameter("idProyecto"));
                     String json = "";
-                    json = this.daoProyecto.buscarProyecto(id);
+                    json = this.daoProyecto.buscarProyecto1(id);
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(403);
@@ -70,7 +69,7 @@ public class GestionProyecto extends HttpServlet {
                 if (chequeo != null) {
                     int id = chequeo.getId();
                     String json = "";
-                    json = this.daoProyecto.buscarProyectoPorUsuario(id);
+                    json = this.daoProyecto.buscarProyectoPorUsuario1(id);
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(401);
@@ -79,7 +78,7 @@ public class GestionProyecto extends HttpServlet {
                 if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
                     String json = "";
-                    json = this.daoProyecto.jsonUsuarios(idProyecto);
+                    json = this.daoProyecto.usuariosSegunProyecto(idProyecto);
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(403);
