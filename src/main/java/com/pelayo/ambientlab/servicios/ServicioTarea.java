@@ -77,4 +77,22 @@ public class ServicioTarea {
             throw new HTTPStatusException(403);
         }
     }
+
+    /**
+     * Metodo para actualizar el estado en el que se encuentra una tarea asignada.
+     * @param chequeo Usuario que lanza la peticion de actualizacion.
+     * @param estado Estado actualizado por el Usuario.
+     * @param idTarea Id de la tarea actualizada.
+     * @throws SQLException
+     * @throws HTTPStatusException
+     */
+    public void actualizarEstadoTarea(Usuario chequeo, String estado, int idTarea) throws SQLException, HTTPStatusException {
+        // Comprobamos que el usuario esta logeado.
+        if (chequeo != null ) {
+            // Llamamos al DAOTarea para actualizar la tarea en a BD.
+            daoTarea.actualizarEstado(estado, idTarea);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.pelayo.ambientlab.controlador;
 
+import com.pelayo.ambientlab.dao.DAOTarea;
 import com.pelayo.ambientlab.excepciones.HTTPStatusException;
 import com.pelayo.ambientlab.modelo.Usuario;
 import com.pelayo.ambientlab.servicios.ServicioLogin;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 
@@ -18,6 +20,7 @@ import java.sql.SQLException;
 public class GestionTarea extends HttpServlet {
     ServicioLogin servicioLogin = new ServicioLogin();
     ServicioTarea servicioTarea = new ServicioTarea();
+    DAOTarea daoTarea = new DAOTarea();
 
     public GestionTarea() throws SQLException {
     }
@@ -25,13 +28,72 @@ public class GestionTarea extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicutd doGet.
+        PrintWriter out = response.getWriter();
+        // Obntenemos la opcion seleccionada desde el cliente.
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
-
+            if (opcion == 0) { // Listar todas las tareas.
+                // Comprobamos que el usuario sea Admin o Supervisor.
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
+                    String json = "";
+                    // Llamos al DAOTareas para listar todas las tareas.
+                    json = this.daoTarea.listarTareas();
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            } else if (opcion == 1) { // Listar una tarea.
+                if (chequeo != null) {
+                    // Recogemos el idProyecto desde el cliente.
+                    int idTarea = Integer.parseInt(request.getParameter("idTarea"));
+                    String json = "";
+                    // Llamos al DAOTareas para listar todas las tareas.
+                    json = this.daoTarea.listarUnaTarea(idTarea);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            } else if (opcion == 2) { // Listar tareas por Proyecto.
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
+                    // Recogemos el idProyecto desde el cliente.
+                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                    String json = "";
+                    // Llamos al DAOTareas para listar todas las tareas.
+                    json = this.daoTarea.tareasPorProyecto(idProyecto);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            } else if (opcion == 3) { // Listar tareas por Usuario.
+                if (chequeo != null) {
+                    // Recogemos el idUsuario
+                    int idUsuario = chequeo.getId();
+                    String json = "";
+                    // Llamos al DAOTareas para listar todas las tareas del Usuario.
+                    json = this.daoTarea.tareasPorUsuario(idUsuario);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            } else if (opcion == 4) { // Listar Tareas de un Proyecto por Usuario.
+                if (chequeo != null) {
+                    // Recogemos el idUsuario
+                    int idUsuario = chequeo.getId();
+                    // Recogemos el idProyecto desde el cliente.
+                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                    String json = "";
+                    // Llamos al DAOTareas para listar todas las tareas del Usuario.
+                    json = this.daoTarea.tareasPorProyectoXUsuario(idProyecto, idUsuario);
+                    out.print(json);
+                } else {
+                    throw new HTTPStatusException(403);
+                }
+            }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
         } catch (SQLException e) {
@@ -95,11 +157,14 @@ public class GestionTarea extends HttpServlet {
                 servicioTarea.editarTarea(chequeo, titulo, observaciones, estado, idProyecto, idUsuario, idTarea);
 
             } else if (opcion == 1) { // Actualizar estado de tarea.
+                // Reccogemos el estado actualizado desde el cliente.
+                String estado = request.getParameter("estado");
+                // Recogemos el Id de la tarea a actualizar.
+                int idTarea = Integer.parseInt(request.getParameter("idTarea"));
 
+                // Llamamos a la capa servicosTarea para lanzar el metodo actualizarEstadoTarea.
+                servicioTarea.actualizarEstadoTarea(chequeo, estado, idTarea);
             }
-
-
-
 
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
