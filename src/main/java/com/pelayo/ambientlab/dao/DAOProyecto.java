@@ -43,7 +43,7 @@ public class DAOProyecto {
         ps.close();
     }
 
-    public String listarProyectos1() throws SQLException, HTTPStatusException {
+    public String listarProyectos() throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
 
@@ -74,7 +74,7 @@ public class DAOProyecto {
         return json;
     }
 
-    public String buscarProyecto1(int idProyecto) throws HTTPStatusException, SQLException {
+    public String buscarProyecto(int idProyecto) throws HTTPStatusException, SQLException {
         String json = "";
         Gson gson = new Gson();
 
@@ -97,7 +97,7 @@ public class DAOProyecto {
         return json;
     }
 
-    public String buscarProyectoPorUsuario1(int idUsuario) throws SQLException, HTTPStatusException {
+    public String buscarProyectoPorUsuario (int idUsuario) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
 

@@ -49,7 +49,7 @@ public class GestionMuestra extends HttpServlet {
             if (opcion == 0) { // Listar todas las muestras.
                 if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor() || chequeo.esRegistro())) {
                     String json = "";
-                    json = this.daoMuestra.listaMuestras();
+                    json = this.daoMuestra.listaMuestras1();
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(403);
@@ -58,7 +58,7 @@ public class GestionMuestra extends HttpServlet {
                 if (chequeo != null) {
                     int idMuestra = Integer.parseInt(request.getParameter("idMuestra"));
                     String json = "";
-                    json = this.daoMuestra.listarUnaMuestra(idMuestra);
+                    json = this.daoMuestra.listarUnaMuestr1(idMuestra);
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(401);
@@ -67,7 +67,7 @@ public class GestionMuestra extends HttpServlet {
                 if (chequeo != null) {
                     int id = Integer.parseInt(request.getParameter("idProyecto"));
                     String json = "";
-                    json = this.daoMuestra.listarMuestrasPorProyecto(id);
+                    json = this.daoMuestra.listarMuestrasPorProyecto1(id);
                     out.print(json);
                 } else {
                     throw new HTTPStatusException(401);
