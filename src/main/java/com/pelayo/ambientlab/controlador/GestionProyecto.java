@@ -94,32 +94,40 @@ public class GestionProyecto extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicitud doPost.
+        // Recogemos la opcion desde el cliente.
+        int opcion = Integer.parseInt(request.getParameter("op"));
 
         try {
             Usuario chequeo;
             // Comprobamos que el Usuario tenga la sesion iniciada.
             chequeo = servicioLogin.chequeoSesion(request, response);
 
+            if (opcion == 0) {
+                // Recogemos los parametros para crear el proyecto.
+                String titulo = request.getParameter("titulo");
+                String descripcion = request.getParameter("descripcion");
+                String estado = request.getParameter("estado");
+                String fechaIni = request.getParameter("fechaInicio");
+                String fechaFin = request.getParameter("fechaFin");
 
-            // Recogemos los parametros para crear el proyecto.
-            String titulo = request.getParameter("titulo");
-            String descripcion = request.getParameter("descripcion");
-            String estado = request.getParameter("estado");
-            String fechaIni = request.getParameter("fechaInicio");
-            String fechaFin = request.getParameter("fechaFin");
+                // Dado que ambas fechas vienen en formato String tenemos que parsear al objeto Date.
 
-            // Dado que ambas fechas vienen en formato String tenemos que parsear al objeto Date.
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
 
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
-
-            Date fechaInicio = formatoFecha.parse(fechaIni);
-            Date fechaFinal = formatoFecha.parse(fechaFin);
-
-
-            // Pasamos todos los parametros recogidos y formateados, junto al usuario, al metodo crearProyecto.
-            serviciosProyecto.crearProyecto(chequeo, titulo, descripcion, estado, fechaInicio, fechaFinal);
+                Date fechaInicio = formatoFecha.parse(fechaIni);
+                Date fechaFinal = formatoFecha.parse(fechaFin);
 
 
+                // Pasamos todos los parametros recogidos y formateados, junto al usuario, al metodo crearProyecto.
+                serviciosProyecto.crearProyecto(chequeo, titulo, descripcion, estado, fechaInicio, fechaFinal);
+            } else if (opcion == 1) {
+                // Recogemos los parametros para añadir un usuario al proyecto.
+                int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+
+                // Llamamos a ServiciosProyecto para lanzar el metodo de asignarUsuario a proyecto.
+                serviciosProyecto.asignarUsuario(chequeo, idProyecto, idUsuario);
+            }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
         } catch (SQLException | ParseException e) {

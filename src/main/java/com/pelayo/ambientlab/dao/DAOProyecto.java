@@ -189,4 +189,15 @@ public class DAOProyecto {
         ps.executeUpdate();
         ps.close();
     }
+
+    public void asignarUsuario(int idProyecto, int idUsuario) throws SQLException {
+        String sql = "INSERT INTO usuario_proyecto (idUsuario, idProyecto) VALUES (?, ?)";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, idUsuario);
+        ps.setInt(2, idProyecto);
+
+        ps.executeUpdate();
+        ps.close();
+    }
 }

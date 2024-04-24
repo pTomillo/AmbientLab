@@ -91,4 +91,20 @@ public class ServiciosProyecto {
             throw new HTTPStatusException(403);
         }
     }
+
+    /**
+     * Metodo para asignar un Usuario a un Proyecto
+     * @param chequeo Usuario que lanza la peticion, debe de ser Admin o supervisor
+     * @param idProyecto Id del proyecto al que se asigna el Usuario.
+     * @param idUsuario Id del Usuario que es asignado.
+     * @throws HTTPStatusException
+     * @throws SQLException
+     */
+    public void asignarUsuario(Usuario chequeo, int idProyecto, int idUsuario) throws HTTPStatusException, SQLException {
+        if (chequeo.esAdmin() || chequeo.esSupervisor()){
+            daoProyecto.asignarUsuario(idProyecto, idUsuario);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
 }
