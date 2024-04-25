@@ -25,7 +25,7 @@ public class DAOProyecto {
         PreparedStatement ps = con.prepareStatement(sql);
 
         ps.setString(1, proyecto.getTitulo());
-        ps.setString(2, proyecto.getDescrripcion());
+        ps.setString(2, proyecto.getDescripcion());
         ps.setString(3, proyecto.getEstado());
         ps.setDate(4, new java.sql.Date(proyecto.getFechaInicio().getTime()));
         ps.setDate(5, new java.sql.Date(proyecto.getFechaFin().getTime()));

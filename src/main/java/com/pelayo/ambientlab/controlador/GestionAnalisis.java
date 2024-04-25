@@ -109,7 +109,7 @@ public class GestionAnalisis extends HttpServlet {
             String tipo = request.getParameter("tipo");
 
             // La fecha tiene que ser correctamente parseada a un objeto Date.
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
             Date fecharegistro = formatoFecha.parse(request.getParameter("fechaAnalisis"));
 
             String estado = request.getParameter("estado");
@@ -145,7 +145,7 @@ public class GestionAnalisis extends HttpServlet {
                 String tipo = request.getParameter("tipo");
 
                 // La fecha tiene que ser correctamente parseada a un objeto Date.
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 Date fecharAnalisis = formatoFecha.parse(request.getParameter("fechaAnalisis"));
 
                 String estado = request.getParameter("estado");

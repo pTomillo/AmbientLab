@@ -5,7 +5,7 @@ import java.util.Date;
 public class Proyecto {
     private int id;
     private String titulo;
-    private String descrripcion;
+    private String descripcion;
     private String estado;
     private Date fechaInicio;
     private Date fechaFin;
@@ -20,7 +20,7 @@ public class Proyecto {
     public Proyecto(int id, String titulo, String descrripcion, String estado, Date fechaInicio, Date fechaFin) {
         this.id = id;
         this.titulo = titulo;
-        this.descrripcion = descrripcion;
+        this.descripcion = descrripcion;
         this.estado = estado;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -28,7 +28,7 @@ public class Proyecto {
 
     public Proyecto(String titulo, String descrripcion, String estado, Date fechaInicio, Date fechaFin) {
         this.titulo = titulo;
-        this.descrripcion = descrripcion;
+        this.descripcion = descrripcion;
         this.estado = estado;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -53,12 +53,12 @@ public class Proyecto {
         this.titulo = titulo;
     }
 
-    public String getDescrripcion() {
-        return descrripcion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescrripcion(String descrripcion) {
-        this.descrripcion = descrripcion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getEstado() {
@@ -93,7 +93,7 @@ public class Proyecto {
         return "Proyecto{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", descrripcion='" + descrripcion + '\'' +
+                ", descrripcion='" + descripcion + '\'' +
                 ", estado='" + estado + '\'' +
                 ", fechaInicio=" + fechaInicio +
                 ", fechaFin=" + fechaFin +

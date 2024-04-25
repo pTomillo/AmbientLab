@@ -60,7 +60,7 @@ public class LoginUsuario extends HttpServlet {
 
                     response.addCookie(new Cookie("sesion", sesion.getCookie()));
 
-                    response.sendRedirect("index.html");
+                    response.sendRedirect("dashboard.html");
 
                 } else {
                     throw new HTTPStatusException(404);

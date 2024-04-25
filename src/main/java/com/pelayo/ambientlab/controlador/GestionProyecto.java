@@ -111,7 +111,7 @@ public class GestionProyecto extends HttpServlet {
 
                 // Dado que ambas fechas vienen en formato String tenemos que parsear al objeto Date.
 
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
 
                 Date fechaInicio = formatoFecha.parse(fechaIni);
                 Date fechaFinal = formatoFecha.parse(fechaFin);
@@ -158,7 +158,7 @@ public class GestionProyecto extends HttpServlet {
 
                 // Dado que ambas fechas vienen en formato String tenemos que parsear al objeto Date.
 
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 Date fechaInicio = formatoFecha.parse(fechaIni);
                 Date fechaFinal = formatoFecha.parse(fechaFin);
 

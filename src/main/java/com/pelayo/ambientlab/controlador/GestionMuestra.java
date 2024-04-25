@@ -100,7 +100,7 @@ public class GestionMuestra extends HttpServlet {
             int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
 
             // La fecha de registro es recogida y adecuadamente parseada.
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
             Date fecharegistro = formatoFecha.parse(request.getParameter("fechaRegistro"));
 
             // Llamamos a la capa ServiciosMuestra, concretamente a la funcion para registar una muestra.
@@ -143,7 +143,7 @@ public class GestionMuestra extends HttpServlet {
                 String fechaReg = request.getParameter("fechaRegistro");
 
                 // La fecha de registro es recogida y adecuadamente parseada.
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-mm-dd");
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 Date fecharegistro = formatoFecha.parse(fechaReg);
 
                 // Llamamos al metodo editarMuestra.
