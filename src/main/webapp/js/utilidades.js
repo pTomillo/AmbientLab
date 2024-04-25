@@ -56,7 +56,6 @@ function pintarProyectos(datos) {
     // Itemamos sobre cada elemento de los datos de proyectos.
     for (let i = 0; i < datos.length; i++) {
         html += `<tr><td>${datos[i].titulo}</td>
-        <td>${datos[i].descripcion} </td>
         <td> <select id="estado_${datos[i].id}" onchange="actualizarEstado('${datos[i].id}', this.options[this.selectedIndex].value)">
             <option value="A la espera" ${datos[i].estado === 'A la espera' ? 'selected' : ''}>A la espera</option>
             <option value="En proceso" ${datos[i].estado === 'En proceso' ? 'selected' : ''}>En proceso</option>
@@ -65,7 +64,7 @@ function pintarProyectos(datos) {
         </td>
         <td>${convertirFecha(datos[i].fechaInicio)}</td>
         <td>${convertirFecha(datos[i].fechaFin)}</td>
-        <td><button onclick="window.location.href='editarProyecto.html?idProyecto=${datos[i].id}&op=1'">Editar</button></td>
+        <td><button onclick="window.location.href='editarProyecto.html?idProyecto=${datos[i].id}&op=0'">Editar</button></td>
         <td><input  type="button" value="Borrar" onclick="borrarProyecto(${datos[i].id})"/></td>
         </tr>`
     }
@@ -83,10 +82,15 @@ function pintarTareas(datos) {
     for (let i = 0; i < datos.length; i++) {
         html += `<tr><td>${datos[i].titulo}</td>
         <td>${datos[i].observaciones}</td>
-        <td>${datos[i].estado} </td>
+        <td> <select id="estado_${datos[i].id}" onchange="actualizarEstadoTarea('${datos[i].id}', this.options[this.selectedIndex].value)">
+            <option value="A la espera" ${datos[i].estado === 'A la espera' ? 'selected' : ''}>A la espera</option>
+            <option value="En proceso" ${datos[i].estado === 'En proceso' ? 'selected' : ''}>En proceso</option>
+            <option value="Finalizado" ${datos[i].estado === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
+            </select>
+        </td>
         <td>${datos[i].idProyecto}</td>
         <td>${datos[i].idUsuario}</td>
-        <td><button onclick="window.location.href='editarTarea.html?idTarea=${datos[i].id}&op=1'">Editar</button></td>
+        <td><button onclick="window.location.href='editarTarea.html?idTarea=${datos[i].id}&op=0'">Editar</button></td>
         <td><input  type="button" value="Borrar" onclick="borrarTarea(${datos[i].id})"/></td>
         </tr>`
     }
@@ -95,6 +99,32 @@ function pintarTareas(datos) {
     // Agregamos el html a la caja correspondiente.
     document.getElementById("cajaTarea").innerHTML = html;
 }
+
+function pintarMuestra(datos) {
+    // Inicializamos la tabla.
+    let html = "<table>";
+    // Iteramos sobre cada elemento de los datos de
+    for (let i = 0; i < datos.length; i++) {
+        html += `<tr><td>${datos[i].referencia}</td>
+        <td>${datos[i].tipo}</td>
+        <td> <select id="estado_${datos[i].id}" onchange="actualizarEstadoMuestra('${datos[i].id}', this.options[this.selectedIndex].value)">
+            <option value="Registrada" ${datos[i].estado === 'Registrada' ? 'selected' : ''}>Registrada</option>
+            <option value="En Analisis" ${datos[i].estado === 'En Analisis' ? 'selected' : ''}>En Analisis</option>
+            <option value="Analizada" ${datos[i].estado === 'Analizada' ? 'selected' : ''}>Analizada</option>
+            </select>
+        </td>
+        <td>${convertirFecha(datos[i].fechaRegistro)}</td>
+        <td>${datos[i].idProyecto}</td>
+        <td><button onclick="window.location.href='editarMuestra.html?idMuestra=${datos[i].id}&op=0'">Editar</button></td>
+        <td><input  type="button" value="Borrar" onclick="borrarMuestra(${datos[i].id})"/></td>
+        </tr>`
+    }
+    // Cerramos tabla
+    html += "</table>";
+    // Agregamos el html a la caja correspondiente.
+    document.getElementById("cajaMuestra").innerHTML = html;
+}
+
 
 
 // Funcion para pintar X en una tabla html.

@@ -16,7 +16,11 @@ function listarUsuarios() {
         .then(data => pintarUsuarios(data))
 }
 
-
+function listarMuestras(){
+    fetch("GestionMuestra?op=0")
+        .then(response =>response.json())
+        .then(data => pintarMuestra(data))
+}
 
 
 function borrarProyecto(idProyecto) {
@@ -37,8 +41,13 @@ function actualizarEstado(idProyecto, estado){
     fetch(`GestionProyecto?op=1&idProyecto=${idProyecto}&estado=${estado}`, {method: "PUT"})
 }
 
+function actualizarEstadoTarea(idTarea, estado){
+    fetch(`GestionTarea?op=1&idTarea=${idTarea}&estado=${estado}`, {method: "PUT"})
+}
+
 window.onload = function () {
      listarProyectosUsuario()
      listarTareasUsuario()
      listarUsuarios()
+     listarMuestras()
 }

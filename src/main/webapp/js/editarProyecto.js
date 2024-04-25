@@ -33,6 +33,7 @@ function pintarFormulario(datos) {
 
 }
 
+
 function editarProyecto(idProyecto) {
      // Obtener los valores actualizados del formulario
      const titulo = document.getElementById("titulo").value;
