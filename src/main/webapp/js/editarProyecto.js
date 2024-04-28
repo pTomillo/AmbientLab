@@ -60,3 +60,18 @@ function editarProyecto(idProyecto) {
 window.onload = function() {
     listarProyecto();
 }
+
+
+function borrarProyecto(idProyecto) {
+    if(confirm("Press a button!\nEither OK or Cancel.")) {
+        fetch(`GestionProyecto?idProyecto=${idProyecto}`, {method: "DELETE"})
+        .then(response => listarProyectosUsuario())
+      } 
+}
+
+function borrarTarea(idTarea) {
+    if(confirm("Press a button!\nEither OK or Cancel.")) {
+        fetch(`GestionTarea?idTarea=${idTarea}`, {method: "DELETE"})
+        .then(response => listarTareasUsuario())
+      } 
+}

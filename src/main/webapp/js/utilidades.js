@@ -30,6 +30,77 @@ function obtenerRol(rolId) {
     return idRol[rolId]
 }
 
+function mostrarError(mensaje) {
+    // Creamos el div para contener el mensaje y le asignamos un id.
+    var divError = document.createElement('div');
+    divError.id = "divError";
+
+    // Agregamno el mensaje de error.
+    divError.textContent = mensaje;
+
+    // Creamos un salto de línea para separar el mensaje de los botones.
+    var salto = document.createElement('br');
+    divError.appendChild(salto);
+
+    // Creamos el boton de aceptar el error para que desaparezca el mensaje.
+    var botonAceptar = document.createElement('button');
+    botonAceptar.textContent = 'Aceptar';
+
+    // Agregamos el evento escuchador al boton.
+    botonAceptar.addEventListener('click', function() {
+        divError.style.display = 'none';
+    });
+    // Agregamos el boton
+    divError.appendChild(botonAceptar);
+
+    // Agrregamos el elemento a su caja correspondiente.
+    document.getElementById('cajaError').appendChild(divError);
+}
+
+
+function mostrarConfirmacion(mensaje) {
+    return new Promise((resolve) => {
+        // Creamos el div para contener el mensaje y le asignamos un id.
+        var divConfirmacion = document.createElement('div');
+        divConfirmacion.id = "divConfirmacion";
+
+        // Agregamno el mensaje de error.
+        divConfirmacion.textContent = mensaje;
+
+        // Creamos un salto de línea para separar el mensaje de los botones.
+        var salto = document.createElement('br');
+        divConfirmacion.appendChild(salto);
+        
+        // Creamos los botones de aceptar y rechazar.
+        var botonAceptar = document.createElement('button');
+        botonAceptar.textContent = 'Aceptar';
+
+        var botonCancelar = document.createElement('button');
+        botonCancelar.textContent = 'Cancelar';
+        
+        // Agregamos el evento escuchador a los botones, devuelven la promesa correspondiente
+        botonAceptar.addEventListener('click', function () {
+            document.getElementById('cajaConfirmacion').removeChild(divConfirmacion);
+            resolve(true);
+        });
+
+        botonCancelar.addEventListener('click', function () {
+            document.getElementById('cajaConfirmacion').removeChild(divConfirmacion);
+            resolve(false);
+        });
+
+        divConfirmacion.appendChild(botonAceptar);
+        divConfirmacion.appendChild(botonCancelar);
+
+        document.getElementById('cajaConfirmacion').appendChild(divConfirmacion);
+    });
+}
+
+
+// -------------------------------------------------------------------------------------------------
+//                 FUNCIONES PINTAR
+// -------------------------------------------------------------------------------------------------
+
 // Funcion para pintar Usuarios en una tabla html.
 function pintarUsuarios(datos) {
     // Inicializamos la tabla.
@@ -40,8 +111,8 @@ function pintarUsuarios(datos) {
         <td>${datos[i].apellidos}</td>
         <td>${obtenerRol(datos[i].rol)}</td>
         <td>${datos[i].email}</td>
-        <td><button onclick="window.location.href='editarUsuario.html?id=${datos[i].id}&op=0'">Editar</button></td>
-        <td><input  type="button" value="Borrar" onclick="borrarUsuario(${datos[i].id})"/></td>
+        <td><img src="img/edit.png" alt="Borrar" onclick="window.location.href='editarUsuario.html?id=${datos[i].id}&op=0'"/></td>
+        <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarUsuario(${datos[i].id}, '${datos[i].nombre}', '${datos[i].apellidos}')"/></td>
         </tr>`    }
     // Cerramos tabla
     html += "</table>";
@@ -63,9 +134,9 @@ function pintarProyectos(datos) {
             </select>
         </td>
         <td>${convertirFecha(datos[i].fechaInicio)}</td>
-        <td>${convertirFecha(datos[i].fechaFin)}</td>
-        <td><button onclick="window.location.href='editarProyecto.html?idProyecto=${datos[i].id}&op=0'">Editar</button></td>
-        <td><input  type="button" value="Borrar" onclick="borrarProyecto(${datos[i].id})"/></td>
+        <td>${convertirFecha(datos[i].fechaFin)}</td> 
+        <td><img src="img/edit.png" alt="Borrar" onclick="window.location.href='editarProyecto.html?idProyecto=${datos[i].id}&op=1'"/></td>
+        <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarProyecto(${datos[i].id}, '${datos[i].titulo}')"/></td>
         </tr>`
     }
     // Cerramos tabla.
@@ -90,8 +161,8 @@ function pintarTareas(datos) {
         </td>
         <td>${datos[i].idProyecto}</td>
         <td>${datos[i].idUsuario}</td>
-        <td><button onclick="window.location.href='editarTarea.html?idTarea=${datos[i].id}&op=0'">Editar</button></td>
-        <td><input  type="button" value="Borrar" onclick="borrarTarea(${datos[i].id})"/></td>
+        <td><img src="img/edit.png" alt="Borrar" onclick="window.location.href='editarTarea.html?idTarea=${datos[i].id}&op=0'"/></td>
+        <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarTarea(${datos[i].id})"/></td>
         </tr>`
     }
     // Cerramos tabla.
@@ -100,6 +171,7 @@ function pintarTareas(datos) {
     document.getElementById("cajaTarea").innerHTML = html;
 }
 
+// Funcion para pintar Muestras en una tabla html.
 function pintarMuestra(datos) {
     // Inicializamos la tabla.
     let html = "<table>";
@@ -115,8 +187,8 @@ function pintarMuestra(datos) {
         </td>
         <td>${convertirFecha(datos[i].fechaRegistro)}</td>
         <td>${datos[i].idProyecto}</td>
-        <td><button onclick="window.location.href='editarMuestra.html?idMuestra=${datos[i].id}&op=0'">Editar</button></td>
-        <td><input  type="button" value="Borrar" onclick="borrarMuestra(${datos[i].id})"/></td>
+        <td><img src="img/edit.png" alt="Borrar" onclick="window.location.href='editarMuestra.html?idMuestra=${datos[i].id}&op=0'"/></td>
+        <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarMuestra(${datos[i].id}, '${datos[i].referencia}')""/></td>
         </tr>`
     }
     // Cerramos tabla
@@ -125,6 +197,56 @@ function pintarMuestra(datos) {
     document.getElementById("cajaMuestra").innerHTML = html;
 }
 
+// Funcion para pintar Analisis en una tabla html.
+function pintarAnalisis(datos) {
+    // Inicializamos la tabla.
+    let html = "<table>";
+    // Iteramos sobre cada elemento de los datos de
+    for (let i = 0; i < datos.length; i++) {
+        html += `<tr><td>${datos[i].id}</td>
+        <td>${datos[i].observaciones}</td>
+        <td>${datos[i].tipo}</td>
+        <td> <select id="estado_${datos[i].id}" onchange="actualizarEstadoAnalisis('${datos[i].id}', this.options[this.selectedIndex].value)">
+            <option value="A la espera" ${datos[i].estado === 'A la espera' ? 'selected' : ''}>A la espera</option>
+            <option value="En realizacion" ${datos[i].estado === 'En realizacion' ? 'selected' : ''}>En realizacion</option>
+            <option value="Completado" ${datos[i].estado === 'Completado' ? 'selected' : ''}>Completado</option>
+            </select>
+        </td>
+        <td>${datos[i].idMuestra}</td>
+        <td>${datos[i].idUsuario}</td>
+        <td>${datos[i].idProyecto}</td>
+        <td><img src="img/edit.png" alt="Borrar" onclick="window.location.href='editarAnalisis.html?idAnalisis=${datos[i].id}&op=0'"/></td>
+        <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarAnalisis(${datos[i].id})"/></td>
+        </tr>`
+    }
+    // Cerramos tabla
+    html += "</table>";
+    // Agregamos el html a la caja correspondiente.
+    document.getElementById("cajaAnalisis").innerHTML = html;
+}
+
+// Funcion para pintar Resultados en una tabla html.
+function pintarResultados(datos) {
+    // Inicializamos la tabla.
+    let html = "<table>";
+    // Iteramos sobre cada elemento de los datos de
+    for (let i = 0; i < datos.length; i++) {
+        html += `<td>${datos[i].parametro}</td>
+        <td>${datos[i].valor}</td>
+        <td>${datos[i].unidad}</td>
+        <td>${datos[i].idAnalisis}</td>
+        <td><button onclick="window.location.href='editarResultado.html?idResultado=${datos[i].id}'">Editar</button></td>
+        <td><input  type="button" value="Borrar" onclick="borrarResultado(${datos[i].id})"/></td>
+
+        <td><img src="img/edit.png" alt="Borrar" onclick="window.location.href='editarResultado.html?idResultado=${datos[i].id}'"/></td>
+        <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarResultado(${datos[i].id})"/></td>
+        </tr>`
+    }
+    // Cerramos tabla
+    html += "</table>";
+    // Agregamos el html a la caja correspondiente.
+    document.getElementById("cajaResultado").innerHTML = html;
+}
 
 
 // Funcion para pintar X en una tabla html.
