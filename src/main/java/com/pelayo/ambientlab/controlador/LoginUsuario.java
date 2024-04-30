@@ -60,8 +60,11 @@ public class LoginUsuario extends HttpServlet {
 
                     response.addCookie(new Cookie("sesion", sesion.getCookie()));
 
-                    response.sendRedirect("dashboard.html");
-
+                    if (usuario.esAdmin()) {
+                        response.sendRedirect("portalAdmin.html");
+                    } else {
+                        response.sendRedirect("dashboard.html");
+                    }
                 } else {
                     throw new HTTPStatusException(404);
                 }
