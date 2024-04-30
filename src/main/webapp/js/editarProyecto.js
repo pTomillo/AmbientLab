@@ -35,26 +35,28 @@ function pintarFormulario(datos) {
 
 
 function editarProyecto(idProyecto) {
-     // Obtener los valores actualizados del formulario
-     const titulo = document.getElementById("titulo").value;
-     const descripcion = document.getElementById("descripcion").value;
-     const estado = document.getElementById("estado").value;
-     const fechaInicio = document.getElementById("fechaInicio").value;
-     const fechaFin = document.getElementById("fechaFin").value;
- 
-     if(confirm("¿Estás seguro de que quieres editar el proyecto?")) {
-         // Hacer la solicitud fetch con los datos actualizados
-         fetch(`GestionProyecto?op=0&idProyecto=${idProyecto}&titulo=${titulo}&descripcion=${descripcion}&estado=${estado}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {method: "PUT"})
-             .then(response => {
-                 if (response.ok) {
-                     // Redirigir al usuario a la página dashboard.html si la solicitud fue exitosa
-                     window.location.href = "dashboard.html";
-                 } else {
-                     console.error('Error al editar el proyecto:', response.status);
-                 }
-             })
-             .catch(error => console.error('Error al editar el proyecto:', error));
-     } 
+    // Obtener los valores actualizados del formulario
+    const titulo = document.getElementById("titulo").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const estado = document.getElementById("estado").value;
+    const fechaInicio = document.getElementById("fechaInicio").value;
+    const fechaFin = document.getElementById("fechaFin").value;
+
+    mostrarConfirmacion(`¿Estás seguro de actualizar el proyecto ${titulo}?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionProyecto?op=0&idProyecto=${idProyecto}&titulo=${titulo}&descripcion=${descripcion}&estado=${estado}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, { method: "PUT" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al editar el proyecto, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
 }
 
 window.onload = function() {

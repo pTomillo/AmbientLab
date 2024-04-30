@@ -44,7 +44,7 @@ body{
 }
 
 #divError button {
-    float: right; /* Alinea el botón a la derecha */
+    float: right; 
     margin-top: 20px ;
     margin-right: 25px;
     margin-bottom: 5px;
@@ -70,7 +70,7 @@ body{
 }
 
 #divConfirmacion button {
-    float: right; /* Alinea el botón a la derecha */
+    float: right; 
     margin-top: 20px ;
     margin-right: 25px;
     margin-bottom: 5px;

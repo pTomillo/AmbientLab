@@ -49,8 +49,6 @@ function listarResultados(){
 }
 
 
-
-
 function actualizarEstado(idProyecto, estado){
     fetch(`GestionProyecto?op=1&idProyecto=${idProyecto}&estado=${estado}`, {method: "PUT"})
         .then(response => {
