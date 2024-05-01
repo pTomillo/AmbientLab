@@ -49,31 +49,6 @@ function listarResultados(){
 }
 
 
-function actualizarEstado(idProyecto, estado){
-    fetch(`GestionProyecto?op=1&idProyecto=${idProyecto}&estado=${estado}`, {method: "PUT"})
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al actualizar el estado del proyecto, no dispones de los permisos necesarios para realizar esta accion');
-            }
-        })
-        .catch(error => {
-            mostrarError(error.message);
-        })
-        
-}
-
-function actualizarEstadoTarea(idTarea, estado){
-    fetch(`GestionTarea?op=1&idTarea=${idTarea}&estado=${estado}`, {method: "PUT"})
-}
-
-function actualizarEstadoMuestra(idMuestra, estado){
-    fetch(`GestionMuestra?op=1&idMuestra=${idMuestra}&estado=${estado}`, {method: "PUT"})
-}
-
-function actualizarEstadoAnalisis(idAnalisis, estado){
-    fetch(`GestionAnalisis?op=1&idAnalisis=${idAnalisis}&estado=${estado}`, {method: "PUT"})
-}
-
 window.onload = function () {
      listarProyectosUsuario()
      listarTareasUsuario()

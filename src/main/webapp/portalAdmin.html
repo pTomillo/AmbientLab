@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Administrador</title>
+    <link rel="stylesheet" href="css/base.css">
 </head>
 
 <body>
@@ -14,12 +15,32 @@
         </div>
         <div id="AmbientLab">AmbientLab</div>
         <ul class="nav-links">
-            <li><a href="dashboard.html">Inicio para Usuarios</a></li>
+            <li class="desplegable">
+                <a href="dashboard.html" class="botonDesplegable">Inicio Usuarios</a>
+                <div class="contenido_desplegable">
+                    <a href="#">Listado Usuarios</a>
+                    <a href="#">Crear Usuario</a>
+                </div>
+            </li>
             <li class="desplegable">
                 <a href="#" class="botonDesplegable">Proyectos</a>
                 <div class="contenido_desplegable">
-                    <a href="#">Crear proyecto</a>
                     <a href="#">Listado proyectos</a>
+                    <a href="#">Crear proyecto</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Muestras</a>
+                <div class="contenido_desplegable">
+                    <a href="#">Listado Muestras</a>
+                    <a href="#">Crear Muestras</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Analisis</a>
+                <div class="contenido_desplegable">
+                    <a href="#">Listado Analisis</a>
+                    <a href="#">Crear Analisis</a>
                 </div>
             </li>
             <li class="desplegable">
@@ -31,6 +52,13 @@
             </li>
         </ul>
     </nav>
+
+    <footer>
+        <div class="contenido_footer">
+            
+        </div>
+
+    </footer>
 
 </body>
 

@@ -34,5 +34,42 @@
     <input type="submit" value="Crear Usuario" onsubmit="window.location.href; return false">
 </form>
 
+
+
+<div id="cajaResultado">
+    <table>
+        <tr>
+            <th>Parámetro</th>
+            <th>Valor</th>
+            <th>Unidad</th>
+            <th>ID de Análisis</th>
+            <th>Editar</th>
+            <th>Borrar</th>
+        </tr>
+        <!-- Ejemplo de datos -->
+        <tr>
+            <td>Parámetro 1</td>
+            <td>Valor 1</td>
+            <td>Unidad 1</td>
+            <td>ID de Análisis 1</td>
+            <td><button onclick="window.location.href='editarResultado.html?idResultado=1'">Editar</button></td>
+            <td><input type="button" value="Borrar" onclick="borrarResultado(1)"/></td>
+        </tr>
+        <!-- Otros resultados... -->
+        <!-- Fila para agregar nuevo resultado -->
+        <tr>
+            <td><input type="text" id="nuevoParametro"></td>
+            <td><input type="text" id="nuevoValor"></td>
+            <td><input type="text" id="nuevaUnidad"></td>
+            <td><input type="text" id="nuevoIdAnalisis"></td>
+            <td></td>
+            <td><button onclick="agregarNuevoResultado()">Agregar</button></td>
+        </tr>
+    </table>
+</div>
+
+
+
+
 </body>
 </html>

@@ -62,6 +62,17 @@ public class GestionUsuario extends HttpServlet {
                     // Si falla lanzamos un error 403 "Acceso no permitido".
                     throw new HTTPStatusException(403);
                 }
+            } else if (opcion == 2) { // Listar usuario con sesion
+                // Si se listan todos los usuarios hace falta comprobar que la sesion sea valida y de  un administrador.
+                if (chequeo != null) {
+                    int idUsuario = chequeo.getId();
+                    String json = "";
+                    json = this.daoUsuario.buscarUsuario(idUsuario);
+                    out.print(json);
+                } else {
+                    // Si falla lanzamos un error 403 "Acceso no permitido".
+                    throw new HTTPStatusException(403);
+                }
             }
         } catch (HTTPStatusException e) {
             // Devolvemos el error.

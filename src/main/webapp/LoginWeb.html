@@ -5,28 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesion</title>
-    <link rel="stylesheet" href="css/base.css">
+    <!-- Logo de la pestaña  -->
+    <link rel="icon" href="img/LogitoAmbientLab.png">
+    <!-- Link a la fuente  -->
     <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
-    <link rel="icon" href="img/LogoAmbientLab.png">
+    <!-- Link al CSS  -->
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Link a los archivos JS necesarios  -->
+    <script src="js/funcionesVarias.js"></script>
+
+
 </head>
 
 <body>
-    <div>
-        <img src="img/LogoAmbientLab.png" alt="LogoAmbientLab" id="logo"/>
+    <div id="cuerpo">
+        <div id="contenido">
+            <img src="img/LogoAmbientLab.png" alt="LogoAmbientLab" id="logo" width="350px" />
+            <form action="LoginUsuario" method="post">
+                <label for="email"><b>Email:</b></label>
+                <input type="text" id="email" name="email" required>
+                <br><br>
+                <label for="contrasena"><b>Contraseña:</b></label>
+                <input type="password" id="contrasena" name="contrasena" required>
+                <br><br>
+                <input type="hidden" name="op" value="0">
+                <button type="submit">Iniciar Sesion</button>
+            </form>
+            
+        </div>
     </div>
- <div id="contenedor">
-    <form action="LoginUsuario" method="post">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
-        <br><br>
-        <label for="contrasena">Contrasena:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
-        <br><br>
-        <input type="hidden" name="op" value="0">
-        <button type="submit" >Iniciar Sesion</button>
-    </form>
- </div>
-
 </body>
 
 </html>
