@@ -278,11 +278,11 @@ function editarAnalisis(idAnalisis) {
     const estado = document.getElementById("estado").value;
     const idMuestra = document.getElementById("idMuestra").value;
     const idUsuario = document.getElementById("idMuestra").value;
-    const idProyecto = document.getElementById("idProyecto").value;
+    const idProyecto = document.getElementById("id").value;
 
     mostrarConfirmacion(`¿Esta seguro de que quiere modificar este analisis?`).then((confirmado) => {
         if (confirmado) {
-            fetch(`GestionAnalisis?observaciones=${observaciones}&tipo=${tipo}&fechaAnalisis=${fechaAnalisis}&estado=${estado}&idMuestra=${idMuestra}&idUsuario=${idUsuario}&idProyecto=${idProyecto}&idAnalisis${idAnalisis}&op=0`, { method: "PUT" })
+            fetch(`GestionAnalisis?observaciones=${observaciones}&tipo=${tipo}&fechaAnalisis=${fechaAnalisis}&estado=${estado}&idMuestra=${idMuestra}&idUsuario=${idUsuario}&idProyecto=${idProyecto}&idAnalisis=${idAnalisis}&op=0`, { method: "PUT" })
                 .then(response => {
                     if (response.ok) {
                         window.history.back();
@@ -534,14 +534,14 @@ function agregarNuevoResultado() {
     const parametro = document.getElementById("nuevoParametro").value;
     const valor = document.getElementById("nuevoValor").value;
     const unidad = document.getElementById("nuevaUnidad").value;
-    const idAnalisis = document.getElementById("idAnalisis").value;
+    const idAnalisis = urlParams.get("idAnalisis");
     // Mostramos el mensaje de confirmacion.
     mostrarConfirmacion(`¿Esta seguro de que quiere añadir este resultado?`).then((confirmado) => {
         if (confirmado) {
             fetch(`GestionResultado?parametro=${parametro}&valor=${valor}&unidad=${unidad}&idAnalisis=${idAnalisis}`, { method: "POST" })
                 .then(response => {
                     if (response.ok) {
-                        pintarResultados();
+                        listarResultadosXAnalisis();
                     } else {
                         throw new Error(`Error al intentar añadir el nuevo resultado.`);
                     }
@@ -761,6 +761,7 @@ function pintarAnalisis(datos) {
     html += `<tr>
                 <th></th>
                 <th>ID</th>
+                <th>Fecha Analisis</th>
                 <th>Observaciones</th>
                 <th>Tipo</th>
                 <th>Estado</th>
@@ -776,6 +777,7 @@ function pintarAnalisis(datos) {
                     <td><img src="img/masInfo.png" alt="Ampliar" onclick="window.location.href='vistaAnalisis.html?idAnalisis=${datos[i].id}&op=1'"/></td>
                     <td>${datos[i].id}</td>
                     <td>${datos[i].observaciones}</td>
+                    <td>${convertirFecha(datos[i].fechaAnalisis)}</td>
                     <td>${datos[i].tipo}</td>
                     <td>
                         <select id="estado_${datos[i].id}" onchange="actualizarEstadoAnalisis('${datos[i].id}', this.options[this.selectedIndex].value)">
@@ -820,19 +822,21 @@ function pintarResultados(datos) {
                     <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarResultado(${datos[i].id})"/></td>
                 </tr>`;
     }
+     // Creamos una variable para almacenar el ID de análisis.
+     let idAnalisis = datos[0].idAnalisis;
     // Agregamos una fila en blanco al final para agregar nuevos resultados.
     html += `<tr>
                 <td><input type="text" id="nuevoParametro"></td>
                 <td><input type="text" id="nuevoValor"></td>
                 <td><input type="text" id="nuevaUnidad"></td>
-                <td><spam type="text" id="IdAnalisis">${datos[i].id}</td>
+                <td><spam type="text" id="IdAnalisis">${idAnalisis}</td>
                 <td></td>
                 <td><button onclick="agregarNuevoResultado()">Agregar</button></td>
             </tr>`;
     // Cerramos la tabla.
     html += "</table>";
     // Agregamos el HTML a la caja correspondiente.
-    document.getElementById("cajaResultado").innerHTML = html;
+    document.getElementById("cajaResultados").innerHTML = html;
 }
 
 // ------------------------------------------------------------------------
@@ -856,6 +860,9 @@ function pintarFichaUsuario(datos) {
     <br><br>
     <label><b>Email:</b></label>
     <span id="email">${datos.email}</span>
+    <br><br>
+    <input type="button" value="Editar Usuario" onclick="window.location.href='editarUsuario.html?id=${datos.id}&op=0'"/>
+    <input type="button" value="Cambiar Contraseña" onclick="window.location.href='cambiarContrasena.html'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -881,6 +888,8 @@ function pintarFichaProyecto(datos) {
     <br><br>
     <label><b>Fecha de Fin:</b></label>
     <span id="fechaFin">${convertirFecha(datos.fechaFin)}</span>
+    <br><br>
+    <input type="button" value="Editar Proyecto" onclick="window.location.href='editarProyecto.html?idProyecto=${datos.id}&op=1'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -904,6 +913,7 @@ function pintarFichaMuestra(datos) {
     <label><b>Fecha de registro:</b></label>
     <span id="fechaRegistro">${convertirFecha(datos.fechaRegistro)}</span>
     <br><br>
+    <input type="button" value="Editar Muestra" onclick="window.location.href='editarMuestra.html?idMuestra=${datos.id}&op=0'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -917,6 +927,9 @@ function pintarFichaAnalisis(datos) {
     <br><br>
     <label><b>Observaciones:</b></label>
     <span id="observaciones">${datos.observaciones}</span>
+    <br><br>
+    <label><b>Fecha Analisis:</b></label>
+    <span id="fechaAnalisis">${convertirFecha(datos.fechaAnalisis)}</span>
     <br><br>
     <label><b>Tipo:</b></label>
     <span id="tipo">${datos.tipo}</span>
@@ -933,35 +946,7 @@ function pintarFichaAnalisis(datos) {
     <label><b>Proyecto:</b></label>
     <span id="idProyecto">${datos.idProyecto}</span>
     <br><br>
-</div>`;
-
-    document.getElementById("cajaFicha").innerHTML = html;
-}
-
-// Funcion para pintar la ficha de un Analisis
-function pintarFichaAnalisis(datos) {
-    let html = `<div class="fichaAnalisis">
-    <label><b>ID:</b></label>
-    <span id="idAnalisis">${datos.id}</span>
-    <br><br>
-    <label><b>Observaciones:</b></label>
-    <span id="observaciones">${datos.observaciones}</span>
-    <br><br>
-    <label><b>Tipo:</b></label>
-    <span id="tipo">${datos.tipo}</span>
-    <br><br>
-    <label><b>Estado:</b></label>
-    <span id="estado">${datos.estado}</span>
-    <br><br>
-    <label><b>Muestra:</b></label>
-    <span id="idMuestra">${datos.idMuestra}</span>
-    <br><br>
-    <label><b>Usuario:</b></label>
-    <span id="idUsuario">${datos.idUsuario}</span>
-    <br><br>
-    <label><b>Proyecto:</b></label>
-    <span id="idProyecto">${datos.idProyecto}</span>
-    <br><br>
+    <input type="button" value="Editar Analisis" onclick="window.location.href='editarAnalisis.html?idAnalisis=${datos.id}&op=0'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -982,6 +967,7 @@ function pintarFichaTarea(datos) {
     <label><b>ID de Análisis:</b></label>
     <span id="idAnalisis">${datos.idAnalisis}</span>
     <br><br>
+    <input type="button" value="Editar Muestra" onclick="window.location.href='editarTarea.html?idTarea=${datos.id}&op=0'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -996,11 +982,11 @@ function pintarFormularioUsuario(datos) {
     let html = `<form id="formEditarUsuario">
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" required value="${datos.nombre}"/>
-    <label for="apellidos">Descripción:</label>
+    <label for="apellidos">Apellidos:</label>
     <input type="text" id="apellidos" name="apellidos" required value="${datos.apellidos}"/>
     <label for="rol">Rol:</label>
-    <input type="text" id="rol" name="rol" required value="${obtenerRol(datos.rol)}"/>
-    <label for="rol>Email</label>
+    <input type="text" id="rol" name="rol" required value="${obtenerRol(datos.rol)}" disabled/>
+    <label for="email">Email</label>
     <input type="text" id="email" name="email" required value="${datos.email}"/>
 </form>
 <br/>
@@ -1082,6 +1068,9 @@ function pintarFormularioAnalisis(datos) {
     <label for="observaciones"><b>Observaciones:</b></label>
     <textarea id="observaciones" name="observaciones" rows="4" required>${datos.observaciones}</textarea>
     <br><br>
+    <label for="fechaAnalisis"><b>Fecha de Analisis:</b></label>
+    <input type="text" id="fechaAnalisis" name="fechaAnalisis" required value="${convertirFecha(datos.fechaAnalisis)}"/>
+    <br><br>
     <label for="tipo"><b>Tipo</b></label>
     <select id="tipo" name="tipo" required>
         <option value="ICP-MS" ${datos.estado === 'ICP-MS' ? 'selected' : ''}>ICP-MS</option>
@@ -1107,7 +1096,7 @@ function pintarFormularioAnalisis(datos) {
     <br><br>
 </form>
 <br/>
-<input type="button" value="Guardar Muestra" onclick="editarAnalisis(${datos.id})"/>`;
+<input type="button" value="Guardar Analisis" onclick="editarAnalisis(${datos.id})"/>`;
 
     document.getElementById("cajaFormulario").innerHTML = html;
 }
@@ -1290,7 +1279,7 @@ function listarUnAnalisis() {
     fetch(`GestionAnalisis?op=1&idAnalisis=${idAnalisis}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al cargar la muestra');
+                throw new Error('Error al cargar el analisis');
             }
             return response.json();
         })
@@ -1309,7 +1298,7 @@ function listarResultadosXAnalisis() {
             }
             return response.json();
         })
-        .then(data => pintarAnalisis(data))
+        .then(data => pintarResultados(data))
         .catch(error => {
             mostrarError(error.message);
         });
@@ -1366,7 +1355,19 @@ function listarTareasXProyecto() {
 //                      FUNCIONES LISTAR PARA EDITAR
 //-------------------------------------------------------------------------
 
-
+function editarUsuarioConSesion() {
+    fetch(`GestionUsuario?op=2`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar su Usuario');
+            }
+            return response.json();
+        })
+        .then(data => pintarFormularioUsuario(data))
+        .catch(error => {
+            mostrarError(error.message);
+        });
+}
 
 function editarUnProyecto() {
     const idProyecto = urlParams.get("idProyecto")
@@ -1403,7 +1404,7 @@ function editarUnAnalisis() {
     fetch(`GestionAnalisis?op=1&idAnalisis=${idAnalisis}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al cargar la muestra');
+                throw new Error('Error al cargar el analisis');
             }
             return response.json();
         })

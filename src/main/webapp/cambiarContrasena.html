@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar contraseña</title>
+    <!-- Logo de la pestaña  --> 
+    <link rel="icon" href="img/LogitoAmbientLab.png">
+    <!-- Link a la fuente  --> 
+    <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+    <!-- Link al CSS  --> 
+    <link rel="stylesheet" href="css/base.css">
+    <!-- Link a los archivos JS necesarios  -->
+    <script src="js/funcionesVarias.js"></script>
+    
+
+</head>
+
+<body>
+    <!-- Nav Bar  -->
+    <nav>
+        <div class="logo-container">
+            <div id="logo"><img src="img/LogitoAmbientLab.png" width="100px" alt=""></div>
+        </div>
+        <div id="AmbientLab">AmbientLab</div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Inicio</a></li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Proyectos</a>
+                <div class="contenido_desplegable">
+                    <a href="crearProyecto.html">Crear proyecto</a>
+                    <a href="listadoProyectos.html">Listado proyectos</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Perfil de Usuario</a>
+                <div class="contenido_desplegable">
+                    <a href="perfilUsuario.html">Ver mi perfil</a>
+                    <a href="#" onclick="cerrarSesion()">Cerrar sesion</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- Cuerpo de la pagina  -->
+    <div id=cuerpo>
+        <div id="contenedorDashboard">
+            <h1>Cambiar Contraseña</h1>
+            <div id="cajaFormulario" class="cajaFormulario">
+                <form id="formCambiarContrasena">
+                    <label for="con1">Contraseña actual:</label>
+                    <input type="password" id="con1" name="con1" required/>
+                    <br/>
+                    <label for="con2">Confirmar contraseña actual:</label>
+                    <input type="password" id="con2" name="con2" required/>
+                    <br/>
+                    <label for="ncon">Nueva contraseña:</label>
+                    <input type="password" id="ncon" name="ncon" required/>
+                    <br/>
+                    <input type="button" value="Cambiar Contraseña" onclick="cambiarContrasena()"/>
+                </form>
+                
+            </div> 
+    </div>
+    <div id="cajaError"></div>
+    <div id="cajaConfirmacion"></div>
+</body>
+
+<script>
+    window.onload = function(){
+    
+    }
+</script>
+
+</html>
