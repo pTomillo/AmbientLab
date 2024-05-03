@@ -34,6 +34,21 @@ public class DAOUsuario {
         ps.close();
     }
 
+    public void registrarUsuario(Usuario u) throws SQLException {
+
+        String sql = "INSERT INTO usuario ( nombre, apellidos, rol, email, contrasena) VALUES (?,?,?,?,?)";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, u.getNombre());
+        ps.setString(2, u.getApellidos());
+        ps.setInt(3, 9);
+        ps.setString(4, u.getEmail());
+        ps.setString(5, u.getHash());
+
+        ps.executeUpdate();
+        ps.close();
+    }
+
     public Usuario usuarioPorMail(String email) throws SQLException {
         String sql = "SELECT * FROM usuario WHERE email = ?";
         PreparedStatement ps = con.prepareStatement(sql);

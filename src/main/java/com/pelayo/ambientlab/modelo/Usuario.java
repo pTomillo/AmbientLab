@@ -54,6 +54,13 @@ public class Usuario {
         this.email = email;
     }
 
+    public Usuario(String nombre, String apellidos, String email, String hash) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.hash = hash;
+    }
+
     public Usuario(int id) throws SQLException {
     }
 

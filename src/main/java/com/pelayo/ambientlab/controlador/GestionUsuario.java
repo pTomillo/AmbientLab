@@ -84,28 +84,36 @@ public class GestionUsuario extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        // Recogemos la opcion desde el navegador.
+        int opcion = Integer.parseInt(request.getParameter("op"));
         try {
-            Usuario chequeo;
-            try {
+            if (opcion == 0) {
+                Usuario chequeo;
                 chequeo = servicioLogin.chequeoSesion(request, response);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
 
-            String nombre = request.getParameter("nombre");
-            String apellidos = request.getParameter("apellidos");
-            int rol = Integer.parseInt(request.getParameter("rol"));
-            String email = request.getParameter("email");
-            String contrasena = request.getParameter("contrasena");
 
-            try {
+                String nombre = request.getParameter("nombre");
+                String apellidos = request.getParameter("apellidos");
+                int rol = Integer.parseInt(request.getParameter("rol"));
+                String email = request.getParameter("email");
+                String contrasena = request.getParameter("contrasena");
+
                 servicioUsuario.crearUsuario(chequeo, nombre, apellidos, rol, email, contrasena);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+
+            } else if (opcion == 1) {
+                String nombre = request.getParameter("nombre");
+                String apellidos = request.getParameter("apellidos");
+                String email = request.getParameter("email");
+                String contrasena = request.getParameter("contrasena");
+
+                String hash = servicioLogin.hashContrasena(contrasena);
+
+                servicioUsuario.registrarUsuario(nombre, apellidos, email, hash);
             }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

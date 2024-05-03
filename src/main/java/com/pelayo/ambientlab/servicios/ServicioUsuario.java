@@ -12,6 +12,11 @@ public class ServicioUsuario {
 
     public ServicioUsuario() throws SQLException {
     }
+    
+    public void registrarUsuario(String nombre, String apellidos, String email, String hash) throws SQLException {
+        Usuario registrado = new Usuario(nombre, apellidos, email, hash);
+        daoUsuario.registrarUsuario(registrado);
+    }
 
 
     public void crearUsuario(Usuario creador, String nombre, String apellidos, int rol, String email, String contrasena) throws SQLException, HTTPStatusException {
@@ -94,4 +99,6 @@ public class ServicioUsuario {
 
         daoUsuario.resetContrasena(id, newHash);
     }
+
+
 }
