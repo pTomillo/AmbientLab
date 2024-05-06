@@ -14,26 +14,26 @@
     <!-- Link a los archivos JS necesarios  -->
     <script src="js/funcionesVarias.js"></script>
 
-
 </head>
 
 <body>
     <div id="cuerpo">
         <div id="contenido">
             <img src="img/LogoAmbientLab.png" alt="LogoAmbientLab" id="logo" width="350px" />
-            <form action="LoginUsuario" method="post">
+            <form>
                 <label for="email"><b>Email:</b></label>
                 <input type="text" id="email" name="email" required>
                 <br><br>
                 <label for="contrasena"><b>Contraseña:</b></label>
                 <input type="password" id="contrasena" name="contrasena" required>
                 <br><br>
-                <input type="hidden" name="op" value="0">
-                <button type="submit">Iniciar Sesion</button>
+                <button type="button" onclick="iniciarSesion()">Iniciar Sesión</button>
             </form>
-            
+            <a href="registrarUsuario.html">Registrarse</a>
         </div>
     </div>
+    <div id="cajaError"></div>
+    <div id="cajaConfirmacion"></div>
 </body>
 
 </html>

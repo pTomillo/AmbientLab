@@ -110,6 +110,7 @@ function cerrarSesion() {
             }
         });
 }
+
 // ------------------------------------------------------------------------
 //                      FUNCIONES EDITAR
 //-------------------------------------------------------------------------
@@ -822,8 +823,8 @@ function pintarResultados(datos) {
                     <td><img src="img/iconoborrar.png" alt="Borrar" onclick="borrarResultado(${datos[i].id})"/></td>
                 </tr>`;
     }
-     // Creamos una variable para almacenar el ID de análisis.
-     let idAnalisis = datos[0].idAnalisis;
+    // Creamos una variable para almacenar el ID de análisis.
+    let idAnalisis = datos[0].idAnalisis;
     // Agregamos una fila en blanco al final para agregar nuevos resultados.
     html += `<tr>
                 <td><input type="text" id="nuevoParametro"></td>
@@ -1515,6 +1516,31 @@ function listarResultados() {
             return response.json();
         })
         .then(data => pintarResultados(data))
+        .catch(error => {
+            mostrarError(error.message);
+        });
+}
+
+
+// ------------------------------------------------------------------------
+//                      FUNCIONES INICIAR SESION
+//-------------------------------------------------------------------------
+
+function iniciarSesion() {
+    const email = document.getElementById("email").value;
+    const contrasena = document.getElementById("contrasena").value;
+    console.log(email, contrasena)
+    fetch(`LoginUsuario?email=${email}&contrasena=${contrasena}&op=0`, { method: "POST" })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al iniciar sesión, email o contraseña incorrectos');
+            }
+            return response.text(); // Obtener la URL de redirección desde el servlet
+        })
+        .then(redireccion => {
+            // Redirigir al usuario a la URL obtenida
+            window.location.href = redireccion;
+        })
         .catch(error => {
             mostrarError(error.message);
         });

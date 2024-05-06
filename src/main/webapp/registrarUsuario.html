@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <!-- Logo de la pestaña  -->
+    <link rel="icon" href="img/LogitoAmbientLab.png">
+    <!-- Link a la fuente  -->
+    <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+    <!-- Link al CSS  -->
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Link a los archivos JS necesarios  -->
+    <script src="js/funcionesVarias.js"></script>
+
+
+</head>
+
+<body>
+    <div id="cuerpo">
+        <div id="contenido">
+            <H2><b>Registro de Usuario:</b></H2>
+            <form action="GestionUsuario" method="post">
+                <label for="nombre"><b>Nombre:</b></label>
+                <input type="text" id="nombre" name="nombre" required>
+                <br><br>
+                <label for="apellidos"><b>Apellidos:</b></label>
+                <input type="text" id="apellidos" name="apellidos" required>
+                <br><br>
+                <label for="email"><b>Email:</b></label>
+                <input type="text" id="email" name="email" required>
+                <br><br>
+                <label for="contrasena"><b>Contraseña:</b></label>
+                <input type="password" id="contrasena" name="contrasena" required>
+                <br><br>
+                <input type="hidden" name="op" value="1">
+                <button type="submit">Registrarse</button>
+            </form>
+            
+        </div>
+    </div>
+</body>
+
+</html>
