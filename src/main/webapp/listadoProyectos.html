@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vista Proyecto</title>
+    <title>Listado de Proyectos</title>
     <!-- Logo de la pestaña  --> 
     <link rel="icon" href="img/LogitoAmbientLab.png">
     <!-- Link a la fuente  --> 
@@ -45,25 +45,17 @@
     <!-- Cuerpo de la pagina  -->
     <div id=cuerpo>
         <div id="contenedorDashboard">
-            <h1>Proyecto</h1>
-            <div id="cajaFicha" class="cajaFicha"></div>
-            <h1>Muestras</h1>
-            <div id="cajaMuestra" class="cajaLista"></div>
-            <h1>Tareas</h1>
-            <div id="cajaTarea" class="cajaLista"></div>
-            <h1>Usuarios</h1>
-            <div id="cajaUsuarios" class="cajaLista"></div>
+            <h1>Listado de Proyectos</h1>
+            <div id="cajaProyectos" class="cajaLista"></div>
     </div>
     <div id="cajaError"></div>
     <div id="cajaConfirmacion"></div>
+
 </body>
 
 <script>
     window.onload = function(){
-        listarProyecto()
-        listarMuestrasXProyecto()
-        listarTareasXProyecto()
-        listarUsuariosXProyecto()
+        listarProyectos()
     }
 </script>
 

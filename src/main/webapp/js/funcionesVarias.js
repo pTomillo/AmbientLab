@@ -112,6 +112,137 @@ function cerrarSesion() {
 }
 
 // ------------------------------------------------------------------------
+//                      FUNCIONES CREAR
+//-------------------------------------------------------------------------
+
+function crearProyecto() {
+    // Obtener los valores actualizados del formulario
+    const titulo = document.getElementById("titulo").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const estado = document.getElementById("estado").value;
+    const fechaInicio = document.getElementById("fechaInicio").value;
+    const fechaFin = document.getElementById("fechaFin").value;
+
+    mostrarConfirmacion(`¿Desea crear el proyecto ${titulo}?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionProyecto?titulo=${titulo}&descripcion=${descripcion}&estado=${estado}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&op=0`, { method: "POST" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al crear el proyecto, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
+}
+
+function registrarMuestra(){
+    // Obtener los valores actualizados del formulario
+    const referencia = document.getElementById("referencia").value;
+    const tipo = document.getElementById("tipo").value;
+    const origen = document.getElementById("origen").value;
+    const estado = document.getElementById("estado").value;
+    const fechaRegistro = document.getElementById("fechaRegistro").value;
+    const idProyecto = document.getElementById("idProyecto").value;
+
+    mostrarConfirmacion(`¿Desea registrar la muestra ${referencia}?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionMuestra?referencia=${referencia}&tipo=${tipo}&origen=${origen}&estado=${estado}&fechaRegistro=${fechaRegistro}&idProyecto=${idProyecto}`, { method: "POST" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al registrar la muestra, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
+}
+
+function crearAnalisis(){
+    // Obtener los valores actualizados del formulario
+    const observaciones = document.getElementById("observaciones").value;
+    const tipo = document.getElementById("tipo").value;
+    const fechaAnalisis = document.getElementById("fechaAnalisis").value;
+    const estado = document.getElementById("estado").value;
+    const idMuestra = document.getElementById("idMuestra").value;
+    const idProyecto = document.getElementById("idProyecto").value;
+
+    mostrarConfirmacion(`¿Desea crear el analisis?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionAnalisis?observaciones=${observaciones}&tipo=${tipo}&fechaAnalisis=${fechaAnalisis}&estado=${estado}&idMuestra=${idMuestra}&idProyecto=${idProyecto}`, { method: "POST" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al crear el analisis, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
+}
+
+function crearResultado(){
+    // Obtener los valores actualizados del formulario
+    const parametro = document.getElementById("parametro").value;
+    const valor = document.getElementById("valor").value;
+    const unidad = document.getElementById("unidad").value;
+    const idAnalisis = document.getElementById("idAnalisis").value;
+
+    mostrarConfirmacion(`¿Desea agregar el resultado?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionResultado?parametro=${parametro}&valor=${valor}&unidad=${unidad}&idAnalisis=${idAnalisis}`, { method: "POST" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al guardar el resultado, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
+}
+
+function crearTarea(){
+    // Obtener los valores actualizados del formulario
+    const titulo = document.getElementById("titulo").value;
+    const observaciones = document.getElementById("observaciones").value;
+    const estado = document.getElementById("estado").value;
+    const idUsuario = document.getElementById("idUsuario").value;
+    const idProyecto = document.getElementById("idProyecto").value;
+
+    mostrarConfirmacion(`¿Desea agregar la tarea ${titulo} al proyecto ${idProyecto}?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionTarea?titulo=${titulo}&observaciones=${observaciones}&estado=${estado}&idProyecto=${idProyecto}&idUsuario=${idUsuario}`, { method: "POST" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al guardar la tarea, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
+}
+
+
+// ------------------------------------------------------------------------
 //                      FUNCIONES EDITAR
 //-------------------------------------------------------------------------
 
@@ -261,7 +392,7 @@ function editarMuestra(idMuestra) {
                     if (response.ok) {
                         window.history.back();
                     } else {
-                        throw new Error(`Error al intentar actualizar la muestras ${referencia}, no dispone de los permisos necesarios para realizar esta acción`);
+                        throw new Error(`Error al intentar actualizar la muestra ${referencia}, no dispone de los permisos necesarios para realizar esta acción`);
                     }
                 })
                 .catch(error => {
@@ -278,8 +409,8 @@ function editarAnalisis(idAnalisis) {
     const fechaAnalisis = document.getElementById("fechaAnalisis").value;
     const estado = document.getElementById("estado").value;
     const idMuestra = document.getElementById("idMuestra").value;
-    const idUsuario = document.getElementById("idMuestra").value;
-    const idProyecto = document.getElementById("id").value;
+    const idUsuario = document.getElementById("idUsuario").value;
+    const idProyecto = document.getElementById("idProyecto").value;
 
     mostrarConfirmacion(`¿Esta seguro de que quiere modificar este analisis?`).then((confirmado) => {
         if (confirmado) {
@@ -328,7 +459,7 @@ function editarTarea(idTarea) {
     const titulo = document.getElementById("titulo").value;
     const observaciones = document.getElementById("observaciones").value;
     const estado = document.getElementById("estado").value;
-    const idUsuario = document.getElementById("idMuestra").value;
+    const idUsuario = document.getElementById("idUsuario").value;
     const idProyecto = document.getElementById("idProyecto").value;
 
     mostrarConfirmacion(`¿Esta seguro de que quiere modificar este analisis?`).then((confirmado) => {
@@ -394,7 +525,7 @@ function borrarMuestra(idMuestra, referencia) {
             fetch(`GestionMuestra?id=${idMuestra}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
-                        return listarMuestras();
+                        return listarMuestrasXProyecto();
                     } else {
                         throw new Error(`Error al intentar borrar la muestra ${referencia} , no dispone de los permisos necesarios para realizar esta acción.`);
                     }
@@ -412,7 +543,7 @@ function borrarAnalisis(idAnalisis) {
             fetch(`GestionAnalisis?idAnalisis=${idAnalisis}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
-                        return listarAnalisis();
+                        return listarAnalisisXMuestra();
                     } else {
                         throw new Error(`Error al intentar borrar el analisis ${idAnalisis} , no dispone de los permisos necesarios para realizar esta acción`);
                     }
@@ -430,7 +561,7 @@ function borrarResultado(idResultado) {
             fetch(`GestionResultado?idResultado=${idResultado}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
-                        return listarResultados();
+                        return listarResultadosXAnalisis();
                     } else {
                         throw new Error(`Error al intentar borrar el resultado, no dispone de los permisos necesarios para realizar esta acción`);
                     }
@@ -556,15 +687,34 @@ function agregarNuevoResultado() {
 
 function agregarUsuarioProyecto(idUsuario) {
     // Obtenemos el idProyecto
-    const idProyecto = document.getElementById("idProyecto").value;
+    const idProyecto = urlParams.get("idProyecto")
 
     // Llamamos al servlet para actualziar el estado.
     fetch(`GestionProyecto?op=1&idUsuario=${idUsuario}&idProyecto=${idProyecto}`, { method: "POST" })
         .then(response => {
             if (response.ok) {
-                listarUsuariosXProyecto;
+                window.history.back();
             } else {
                 throw new Error(`Error al intentar añadir participante al proyecto.`);
+            }
+        })
+        .catch(error => {
+            // Si la respuesta es un error lanzamos el aviso.
+            mostrarError(error.message);
+        })
+}
+
+function quitarUsuarioProyecto(idUsuario) {
+    // Obtenemos el idProyecto
+    const idProyecto = urlParams.get("idProyecto")
+
+    // Llamamos al servlet para actualziar el estado.
+    fetch(`GestionProyecto?op=2&idUsuario=${idUsuario}&idProyecto=${idProyecto}`, { method: "POST" })
+        .then(response => {
+            if (response.ok) {
+                listarUsuariosXProyecto();
+            } else {
+                throw new Error(`Error al intentar quitar participante al proyecto.`);
             }
         })
         .catch(error => {
@@ -637,7 +787,34 @@ function pintarUsuariosAgregar(datos) {
     // Cerramos la tabla.
     html += "</table>";
     // Agregamos el HTML a la caja correspondiente.
-    document.getElementById("cajaUsuario").innerHTML = html;
+    document.getElementById("cajaUsuarios").innerHTML = html;
+}
+
+// Funcion para pintar UsuariosAgregar en una tabla html.
+function pintarUsuariosProyecto(datos) {
+    // Inicializamos la tabla con los títulos de columna.
+    let html = "<table>";
+    html += `<tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Rol</th>
+                <th>Email</th>
+            </tr>`;
+    // Iteramos sobre cada elemento de los datos.
+    for (let i = 0; i < datos.length; i++) {
+        html += `<tr>
+                    <td><img src="img/iconoborrar.png" alt="Quitar" onclick="quitarUsuarioProyecto(${datos[i].id})"/></td>
+                    <td>${datos[i].nombre}</td>
+                    <td>${datos[i].apellidos}</td>
+                    <td>${obtenerRol(datos[i].rol)}</td>
+                    <td>${datos[i].email}</td>
+                </tr>`;
+    }
+    // Cerramos la tabla.
+    html += "</table>";
+    // Agregamos el HTML a la caja correspondiente.
+    document.getElementById("cajaUsuarios").innerHTML = html;
 }
 
 // Funcion para pintar los proyectos en una tabla html.
@@ -751,6 +928,8 @@ function pintarMuestra(datos) {
     }
     // Cerramos la tabla.
     html += "</table>";
+    html += `<br>
+    <button onclick="window.location.href = 'registrarMuestra.html?idProyecto=${datos[0].idProyecto}'">Agregar Muestra</button>`
     // Agregamos el HTML a la caja correspondiente.
     document.getElementById("cajaMuestra").innerHTML = html;
 }
@@ -795,7 +974,9 @@ function pintarAnalisis(datos) {
                 </tr>`;
     }
     // Cerramos la tabla.
-    html += "</table>";
+    html += "</table>"
+    html += `<br>
+    <button onclick="window.location.href = 'crearAnalisis.html?idProyecto=${datos[0].idProyecto}&idMuestra=${datos[0].idMuestra}'">Agregar Analisis</button>`
     // Agregamos el HTML a la caja correspondiente.
     document.getElementById("cajaAnalisis").innerHTML = html;
 }
@@ -891,6 +1072,8 @@ function pintarFichaProyecto(datos) {
     <span id="fechaFin">${convertirFecha(datos.fechaFin)}</span>
     <br><br>
     <input type="button" value="Editar Proyecto" onclick="window.location.href='editarProyecto.html?idProyecto=${datos.id}&op=1'"/>
+    <button onclick="window.location.href = 'crearTarea.html?idProyecto=${datos.id}'">Agregar Tarea</button>
+    <button onclick="window.location.href = 'agregarUsuarios.html?idProyecto=${datos.id}'">Agregar Usuarios</button>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -948,6 +1131,7 @@ function pintarFichaAnalisis(datos) {
     <span id="idProyecto">${datos.idProyecto}</span>
     <br><br>
     <input type="button" value="Editar Analisis" onclick="window.location.href='editarAnalisis.html?idAnalisis=${datos.id}&op=0'"/>
+    <input type="button" value="Agregar Resultado" onclick="window.location.href = 'agregarResultado.html?idAnalisis=${datos.id}'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -955,20 +1139,23 @@ function pintarFichaAnalisis(datos) {
 
 // Funcion para pintar la ficha de una Tarea
 function pintarFichaTarea(datos) {
-    let html = `<div class="fichaResultado">
-    <label><b>Parámetro:</b></label>
-    <span id="parametro">${datos.parametro}</span>
+    let html = `<div class="fichaTarea">
+    <label for="titulo"><b>Titulo:</b></label>
+    <span id="titulo">${datos.titulo}</span>
     <br><br>
-    <label><b>Valor:</b></label>
-    <span id="valor">${datos.valor}</span>
+    <label for="observaciones"><b>Observaciones:</b></label>
+    <span id="observaciones">${datos.observaciones}</span>
     <br><br>
-    <label><b>Unidad:</b></label>
-    <span id="unidad">${datos.unidad}</span>
+    <label for="estado"><b>Estado:</b></label>
+    <span id="estado">${datos.estado}</span>
     <br><br>
-    <label><b>ID de Análisis:</b></label>
-    <span id="idAnalisis">${datos.idAnalisis}</span>
+    <label for="idUsuario"><b>Usuario:</b></label>
+    <span id="idUsuario">${datos.idUsuario}</span>
     <br><br>
-    <input type="button" value="Editar Muestra" onclick="window.location.href='editarTarea.html?idTarea=${datos.id}&op=0'"/>
+    <label for="idProyecto"><b>Proyecto:</b></label>
+    <span id="idProyecto">${datos.idProyecto}</span>
+    <br><br>
+    <input type="button" value="Editar Tarea" onclick="window.location.href='editarTarea.html?idTarea=${datos.id}&op=1'"/>
 </div>`;
 
     document.getElementById("cajaFicha").innerHTML = html;
@@ -1210,6 +1397,21 @@ function listarProyectosUsuario() {
             return response.json();
         })
         .then(data => pintarProyectos(data))
+        .catch(error => {
+            mostrarError(error.message);
+        });
+}
+
+function listarUsuariosXProyecto() {
+    idProyecto = urlParams.get("idProyecto")
+    fetch(`GestionProyecto?idProyecto=${idProyecto}&op=4`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar los usuarios');
+            }
+            return response.json();
+        })
+        .then(data => pintarUsuariosProyecto(data))
         .catch(error => {
             mostrarError(error.message);
         });
@@ -1465,11 +1667,11 @@ function listarUsuarios() {
         });
 }
 
-function listarProyectosUsuario() {
+function listarProyectos() {
     fetch("GestionProyecto?op=0")
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al cargar los proyectos');
+                throw new Error('Error al cargar los proyectos, no posee los permisos necesarios para realizar esta accion.');
             }
             return response.json();
         })

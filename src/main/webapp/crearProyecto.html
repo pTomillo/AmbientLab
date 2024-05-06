@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vista Proyecto</title>
+    <title>Crear proyecto</title>
     <!-- Logo de la pestaña  --> 
     <link rel="icon" href="img/LogitoAmbientLab.png">
     <!-- Link a la fuente  --> 
@@ -45,25 +45,40 @@
     <!-- Cuerpo de la pagina  -->
     <div id=cuerpo>
         <div id="contenedorDashboard">
-            <h1>Proyecto</h1>
-            <div id="cajaFicha" class="cajaFicha"></div>
-            <h1>Muestras</h1>
-            <div id="cajaMuestra" class="cajaLista"></div>
-            <h1>Tareas</h1>
-            <div id="cajaTarea" class="cajaLista"></div>
-            <h1>Usuarios</h1>
-            <div id="cajaUsuarios" class="cajaLista"></div>
+            <h1>Crear nuevo proyecto:</h1>
+            <div id="cajaProyectos" class="cajaFormulario">
+                <form id="formCrearProyecto">
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                    <br><br>
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+                    <br><br>
+                    <label for="estado">Estado:</label>
+                    <select id="estado" name="estado" required>
+                        <option value="A la espera">A la espera</option>
+                        <option value="En proceso">En proceso</option>
+                        <option value="Finalizado">Finalizado</option>
+                    </select>
+                    <br><br>
+                    <label for="fechaInicio">Fecha de Inicio:</label>
+                    <input type="text" id="fechaInicio" name="fechaInicio" required>
+                    <br><br>
+                    <label for="fechaFin">Fecha de Fin:</label>
+                    <input type="text" id="fechaFin" name="fechaFin" required>
+                </form>
+                <br>
+                <input type="button" value="Guardar Proyecto" onclick="crearProyecto()">
+            
+            </div>
     </div>
     <div id="cajaError"></div>
     <div id="cajaConfirmacion"></div>
+
 </body>
 
 <script>
     window.onload = function(){
-        listarProyecto()
-        listarMuestrasXProyecto()
-        listarTareasXProyecto()
-        listarUsuariosXProyecto()
     }
 </script>
 

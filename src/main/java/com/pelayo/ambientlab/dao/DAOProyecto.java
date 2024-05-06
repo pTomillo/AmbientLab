@@ -200,4 +200,15 @@ public class DAOProyecto {
         ps.executeUpdate();
         ps.close();
     }
+
+    public void quitarUsuario(int idProyecto, int idUsuario) throws SQLException {
+        String sql = "DELETE FROM usuario_proyecto WHERE idUsuario=? AND idProyecto=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, idUsuario);
+        ps.setInt(2, idProyecto);
+
+        ps.executeUpdate();
+        ps.close();
+    }
 }

@@ -126,6 +126,13 @@ public class GestionProyecto extends HttpServlet {
 
                 // Llamamos a ServiciosProyecto para lanzar el metodo de asignarUsuario a proyecto.
                 serviciosProyecto.asignarUsuario(chequeo, idProyecto, idUsuario);
+            } else if (opcion == 2) {
+                // Recogemos los parametros para añadir un usuario al proyecto.
+                int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+
+                // Llamamos a ServiciosProyecto para lanzar el metodo de asignarUsuario a proyecto.
+                serviciosProyecto.quitarUsuario(chequeo, idProyecto, idUsuario);
             }
         } catch (HTTPStatusException e) {
             response.sendError(e.getEstatus(), e.getMessage());

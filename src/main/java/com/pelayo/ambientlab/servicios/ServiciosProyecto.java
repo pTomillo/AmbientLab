@@ -107,4 +107,12 @@ public class ServiciosProyecto {
             throw new HTTPStatusException(403);
         }
     }
+
+    public void quitarUsuario(Usuario chequeo, int idProyecto, int idUsuario) throws SQLException, HTTPStatusException {
+        if (chequeo.esAdmin() || chequeo.esSupervisor()){
+            daoProyecto.quitarUsuario(idProyecto, idUsuario);
+        } else {
+            throw new HTTPStatusException(403);
+        }
+    }
 }

@@ -54,7 +54,7 @@ public class GestionUsuario extends HttpServlet {
                 }
             } else if (opcion == 0) { // Listar todos los Usuarios.
                 // Si se listan todos los usuarios hace falta comprobar que la sesion sea valida y de  un administrador.
-                if (chequeo != null && chequeo.esAdmin()) {
+                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
                     String json = "";
                     json = this.daoUsuario.listarUsuarios();
                     out.print(json);

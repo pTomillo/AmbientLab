@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vista Proyecto</title>
-    <!-- Logo de la pestaña  --> 
+    <title>Agregar Resultado</title>
+    <!-- Logo de la pestaña  -->
     <link rel="icon" href="img/LogitoAmbientLab.png">
-    <!-- Link a la fuente  --> 
+    <!-- Link a la fuente  -->
     <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
-    <!-- Link al CSS  --> 
+    <!-- Link al CSS  -->
     <link rel="stylesheet" href="css/base.css">
     <!-- Link a los archivos JS necesarios  -->
     <script src="js/funcionesVarias.js"></script>
-    
+
 
 </head>
 
@@ -45,25 +45,35 @@
     <!-- Cuerpo de la pagina  -->
     <div id=cuerpo>
         <div id="contenedorDashboard">
-            <h1>Proyecto</h1>
-            <div id="cajaFicha" class="cajaFicha"></div>
-            <h1>Muestras</h1>
-            <div id="cajaMuestra" class="cajaLista"></div>
-            <h1>Tareas</h1>
-            <div id="cajaTarea" class="cajaLista"></div>
-            <h1>Usuarios</h1>
-            <div id="cajaUsuarios" class="cajaLista"></div>
+            <h1>Agregar Resultado</h1>
+            <div id="cajaResultado" class="cajaFormulario">
+                <form id="formEditarResultado">
+                    <label for="parametro"><b>Parametro:</b></label>
+                    <input type="text" id="parametro" name="parametro" required />
+                    <br><br>
+                    <label for="valor"><b>Valor:</b></label>
+                    <input type="text" id="valor" name="valor" required />
+                    <br><br>
+                    <label for="unidad"><b>Unidad:</b></label>
+                    <input type="text" id="unidad" name="unidad" required />
+                    <br><br>
+                    <label for="idAnalisis"><b>Id de Analisis:</b></label>
+                    <input type="text" id="idAnalisis" name="idAnalisis" readonly>
+                    <br><br>
+                </form>
+                <br />
+                <input type="button" value="Guardar Resultado" onclick="crearResultado()" />
+            </div>
+        </div>
     </div>
     <div id="cajaError"></div>
     <div id="cajaConfirmacion"></div>
 </body>
 
 <script>
-    window.onload = function(){
-        listarProyecto()
-        listarMuestrasXProyecto()
-        listarTareasXProyecto()
-        listarUsuariosXProyecto()
+    window.onload = function () {
+        const idAnalisis = urlParams.get('idAnalisis');
+        document.getElementById('idAnalisis').value = idAnalisis;
     }
 </script>
 

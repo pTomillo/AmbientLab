@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Tarea a Proyecto</title>
+    <!-- Logo de la pestaña  -->
+    <link rel="icon" href="img/LogitoAmbientLab.png">
+    <!-- Link a la fuente  -->
+    <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+    <!-- Link al CSS  -->
+    <link rel="stylesheet" href="css/base.css">
+    <!-- Link a los archivos JS necesarios  -->
+    <script src="js/funcionesVarias.js"></script>
+
+
+</head>
+
+<body>
+    <!-- Nav Bar  -->
+    <nav>
+        <div class="logo-container">
+            <div id="logo"><img src="img/LogitoAmbientLab.png" width="100px" alt=""></div>
+        </div>
+        <div id="AmbientLab">AmbientLab</div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Inicio</a></li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Proyectos</a>
+                <div class="contenido_desplegable">
+                    <a href="crearProyecto.html">Crear proyecto</a>
+                    <a href="listadoProyectos.html">Listado proyectos</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Perfil de Usuario</a>
+                <div class="contenido_desplegable">
+                    <a href="perfilUsuario.html">Ver mi perfil</a>
+                    <a href="#" onclick="cerrarSesion()">Cerrar sesion</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- Cuerpo de la pagina  -->
+    <div id=cuerpo>
+        <div id="contenedorDashboard">
+            <h1>Crear Analisis:</h1>
+            <div id="cajaAnalisis" class="cajaFormulario">
+                <form id="formCrearTarea">
+                    <label for="titulo"><b>Titulo:</b></label>
+                    <input type="text" id="titulo" name="titulo" required />
+                    <br><br>
+                    <label for="observaciones"><b>Observaciones:</b></label>
+                    <textarea id="observaciones" name="observaciones" rows="4" required></textarea>
+                    <br><br>
+                    <label for="estado"><b>Estado:</b></label>
+                    <select id="estado" name="estado" required>
+                        <option value="A la espera">A la espera</option>
+                        <option value="En proceso">En proceso</option>
+                        <option value="Finalizado">Finalizado</option>
+                    </select>
+                    <br><br>
+                    <label for="idUsuario"><b>Usuario:</b></label>
+                    <input type="text" id="idUsuario" name="idUsuario" required />
+                    <br><br>
+                    <label for="idProyecto"><b>Proyecto:</b></label>
+                    <input type="text" id="idProyecto" name="idProyecto" readonly>
+                    <br><br>
+                </form>
+                <br />
+                <input type="button" value="Guardar Tarea" onclick="crearTarea()" />
+
+            </div>
+        </div>
+        <div id="cajaError"></div>
+        <div id="cajaConfirmacion"></div>
+
+</body>
+
+<script>
+    const idProyecto = urlParams.get('idProyecto');
+    document.getElementById('idProyecto').value = idProyecto;
+</script>
+
+</html>
