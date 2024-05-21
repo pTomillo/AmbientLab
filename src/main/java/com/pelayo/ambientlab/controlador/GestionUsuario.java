@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-
+/**
+ * Este servlet maneja la peticiones a la clase Usuario. Incluyendo las peticiones de creacion, listado, edicion y borrado.
+ */
 @WebServlet(name = "GestionUsuario", value = "/GestionUsuario")
 public class GestionUsuario extends HttpServlet {
 
@@ -29,7 +31,13 @@ public class GestionUsuario extends HttpServlet {
     public GestionUsuario() throws SQLException {
     }
 
-
+    /**
+     * Maneja el metodo GET del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -82,6 +90,13 @@ public class GestionUsuario extends HttpServlet {
         }
     }
 
+    /**
+     * Maneja el metodo POST del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Recogemos la opcion desde el navegador.
@@ -117,6 +132,13 @@ public class GestionUsuario extends HttpServlet {
         }
     }
 
+    /**
+     * Maneja el metodo PUT del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejar la solicitud PUT aquí
@@ -203,6 +225,13 @@ public class GestionUsuario extends HttpServlet {
         response.getWriter().write("Usuario Editado");
     }
 
+    /**
+     * Maneja el metodo DELETE del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejar la solicitud DELETE aquí

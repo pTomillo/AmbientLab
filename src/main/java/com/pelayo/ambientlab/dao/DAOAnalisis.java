@@ -7,14 +7,25 @@ import com.pelayo.ambientlab.modelo.Analisis;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de acceder a la base de datos para la clase Analisis.
+ */
 public class DAOAnalisis {
     public Connection con = null;
 
+    /**
+     * Conexion a la Base de datos.
+     * @throws SQLException
+     */
     public DAOAnalisis() throws SQLException {
         this.con = DBConexion.getConexion();
     }
 
-
+    /**
+     * Metodo del DAO para la clase analisis encargado de insertar la creacion de un analisis en la base de datos.
+     * @param aCrear Objeto Analisis que sera insertado en la base de datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de insertar.
+     */
     public void crearAnalisis(Analisis aCrear) throws SQLException {
         String sql = "INSERT INTO analisis (observaciones, tipo, fecha, estado, idMuestra, idUsuario, idProyecto) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -32,6 +43,11 @@ public class DAOAnalisis {
 
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de borrar un analisis de la base de datos.
+     * @param idAnalisis id del Analisis que sera borrado.
+     * @throws SQLException Lanzada en el caso de error a la hora de borrar.
+     */
     public void borrarAnalisis(int idAnalisis) throws SQLException {
         String sql = "DELETE FROM analisis WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -42,6 +58,11 @@ public class DAOAnalisis {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de Editar un Analisis de la base de datos.
+     * @param aEditar Objeto Analisis que sera editado en la base de datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de editar en la base datos.
+     */
     public void editarAnalisis(Analisis aEditar) throws SQLException {
         String sql = "UPDATE analisis SET observaciones=?, tipo=?, fecha=?, estado=?, idMuestra = ?, idUsuario=?, idProyecto=? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -59,6 +80,12 @@ public class DAOAnalisis {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado dactualizar el estado de un Analisis de la base de datos.
+     * @param estado en el que se encuentra el analisis.
+     * @param idAnalisis id del analisis al que se actualizar el estado.
+     * @throws SQLException Lanzada en el caso de error a la hora de actualizar el estado en la base datos.
+     */
     public void actualizarEstado(String estado, int idAnalisis) throws SQLException {
         String sql = "UPDATE analisis SET estado = ? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -70,6 +97,12 @@ public class DAOAnalisis {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de listar todos los analisis recogidos en la base de datos.
+     * @return Devuelve un objeto JSON con los analisis listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar desde la base datos.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun analisis.
+     */
     public String listarAnalisis() throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -101,6 +134,12 @@ public class DAOAnalisis {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de listar un solo analisis desde la base de datos.
+     * @return Devuelve un objeto JSON con el analisis listado.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar desde la base datos.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun analisis.
+     */
     public String listarUnAnalisis(int idAnalisis) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -124,6 +163,12 @@ public class DAOAnalisis {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de listar los analisis, segun al proyecto al que pertenecen, desde la base de datos.
+     * @return Devuelve un objeto JSON con el analisis listado.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar desde la base datos.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun analisis.
+     */
     public String analisisPorProyecto(int idProyecto) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -155,6 +200,12 @@ public class DAOAnalisis {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de listar los analisis, segun la muestra a la que pertenecen, desde la base de datos.
+     * @return Devuelve un objeto JSON con los analisis listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar desde la base datos.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun analisis.
+     */
     public String analisisPorMuestra(int idMuestra) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -187,6 +238,12 @@ public class DAOAnalisis {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Analisis encargado de listar los analisis, segun el Usuario a los que pertenecen, desde la base de datos.
+     * @return Devuelve un objeto JSON con los analisis listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar desde la base datos.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun analisis.
+     */
     public String analisisPorUsuario(int idUsuario) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();

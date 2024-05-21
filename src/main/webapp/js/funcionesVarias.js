@@ -115,6 +115,31 @@ function cerrarSesion() {
 //                      FUNCIONES CREAR
 //-------------------------------------------------------------------------
 
+function crearUsuario() {
+    // Obtener los valores actualizados del formulario
+    const nombre = document.getElementById("nombre").value;
+    const apellidos = document.getElementById("apellidos").value;
+    const email = document.getElementById("email").value;
+    const rol = document.getElementById("rol").value;
+    const contrasena = document.getElementById("contrasena")
+
+    mostrarConfirmacion(`¿Desea crear el perfil de usuario para ${nombre} ${apellidos}?`).then((confirmado) => {
+        if (confirmado) {
+            fetch(`GestionProyecto?titulo=${titulo}&descripcion=${descripcion}&estado=${estado}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&op=0`, { method: "POST" })
+                .then(response => {
+                    if (response.ok) {
+                        window.history.back();;
+                    } else {
+                        throw new Error('Error al crear el proyecto, no dispone de los permisos necesarios para realziar esta accion.');
+                    }
+                })
+                .catch(error => {
+                    mostrarError(error.message);
+                });
+        }
+    });
+}
+
 function crearProyecto() {
     // Obtener los valores actualizados del formulario
     const titulo = document.getElementById("titulo").value;
@@ -128,7 +153,7 @@ function crearProyecto() {
             fetch(`GestionProyecto?titulo=${titulo}&descripcion=${descripcion}&estado=${estado}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&op=0`, { method: "POST" })
                 .then(response => {
                     if (response.ok) {
-                        window.history.back();;
+                        window.history.back();
                     } else {
                         throw new Error('Error al crear el proyecto, no dispone de los permisos necesarios para realziar esta accion.');
                     }
@@ -240,6 +265,7 @@ function crearTarea(){
         }
     });
 }
+
 
 
 // ------------------------------------------------------------------------
@@ -1586,6 +1612,7 @@ function editarUnProyecto() {
             mostrarError(error.message);
         });
 }
+
 
 function editarUnaMuestra() {
     const idMuestra = urlParams.get("idMuestra")

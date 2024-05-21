@@ -11,15 +11,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * Clase encargada de acceder a la base de datos para la clase Muestra.
+ */
 public class DAOMuestra {
 
     public Connection con = null;
 
+    /**
+     * Conexion a la base de datos.
+     * @throws SQLException
+     */
     public DAOMuestra() throws SQLException {
         this.con = DBConexion.getConexion();
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de registrar la creacion de una Muestra en la base de datos.
+     * @param aRegistrar objeto Muestra que va a ser registrado en la Base de Datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de registrar.
+     */
     public void registrarMuestra(Muestra aRegistrar) throws SQLException {
         String sql = "INSERT INTO muestra ( referencia, origen, tipo, estado, fechaRegistro, idProyecto) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -35,6 +46,11 @@ public class DAOMuestra {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de borrar una Muestra en la base de datos.
+     * @param id de la muestra que va a ser eliminada de la base de datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de borrar.
+     */
     public void eliminarMuestra(int id) throws SQLException {
         String sql = "DELETE FROM muestra WHERE id=?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -45,6 +61,11 @@ public class DAOMuestra {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de editar una Muestra en la base de datos.
+     * @param aEditar objeto Muestra que va a ser editado en la Base de Datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de editar.
+     */
     public void editarMuestra(Muestra aEditar) throws SQLException {
         String sql = "UPDATE muestra SET referencia = ?, tipo = ?, origen = ?, estado = ?, fechaRegistro = ?, idProyecto = ? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -61,6 +82,12 @@ public class DAOMuestra {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de actualizar el estado de una Muestra en la base de datos.
+     * @param idMuestra id de la muestra de la que se actualiza el estado.
+     * @param estado de la muestras actualizada.
+     * @throws SQLException Lanzada en el caso de error a la hora de actualizar el estado.
+     */
     public void actualizarEstado(int idMuestra, String estado) throws SQLException {
         String sql = "UPDATE muestra SET estado = ? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -72,6 +99,12 @@ public class DAOMuestra {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de listar todas las muestras en la base de datos.
+     * @return Devuelve un objeto JSON con las muestras listadas.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Muestra
+     */
     public String listaMuestras1() throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -103,6 +136,13 @@ public class DAOMuestra {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de listar una Muestra desde la base de datos.
+     * @param idMuestra id de la muestra que va a ser listada.
+     * @return Devuelve un objeto JSON con las muestras listadas.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Muestra
+     */
     public String listarUnaMuestr1(int idMuestra) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -126,6 +166,13 @@ public class DAOMuestra {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Muestra encargado de listar todas las muestras de un proyecto desde la base de datos.
+     * @param idProyecto id del proyecto al que pertenecen las muestras.
+     * @return Devuelve un objeto JSON con las muestras listadas.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Muestra
+     */
     public String listarMuestrasPorProyecto1(int idProyecto) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();

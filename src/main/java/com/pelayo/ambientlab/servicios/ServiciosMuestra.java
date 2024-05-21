@@ -53,6 +53,7 @@ public class ServiciosMuestra {
         }
     }
 
+
     public void editarMuestra(Usuario chequeo, int idMuestra, String referencia, String tipo, String origen, String estado, Date fecharegistro, int idProyecto) throws HTTPStatusException, SQLException {
         // Comprobamos que el usuario que lanza la peticion sea Admin, Supevisor o Registro.
         if (chequeo.esAdmin() || chequeo.esSupervisor() || chequeo.esRegistro()) {

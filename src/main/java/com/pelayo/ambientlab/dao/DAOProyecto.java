@@ -10,16 +10,26 @@ import java.sql.PreparedStatement;
 import java.sql.*;
 import java.util.ArrayList;
 
-
+/**
+ * Clase encargada de acceder a la base de datos para la clase Proyecto.
+ */
 public class DAOProyecto {
 
     public Connection con = null;
-    private ResultSet rs;
 
+    /**
+     * Conexion a la base de datos.
+     * @throws SQLException
+     */
     public DAOProyecto() throws SQLException {
         this.con = DBConexion.getConexion();
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de registrar la creacion de un Proyecto en la base de datos.
+     * @param proyecto objeto Proyecto que va a ser guardado en la base de datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de crear.
+     */
     public void crearProyecto(Proyecto proyecto) throws SQLException {
         String sql = "INSERT INTO proyecto ( titulo, descripcion, estado, fechaInicio, fechaFin) VALUES (?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -35,6 +45,11 @@ public class DAOProyecto {
 
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de borrar un Proyecto en la base de datos.
+     * @param idProyecto id del proyecto que va a ser borrado
+     * @throws SQLException Lanzada en el caso de error a la hora de borrar.
+     */
     public void borrarProyecto(int idProyecto) throws SQLException {
         String sql = "DELETE FROM proyecto WHERE id=?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -43,6 +58,12 @@ public class DAOProyecto {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de listar todos los Proyectos en la base de datos.
+     * @return Devuelve un objeto JSON con los proyectos listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException  Lanzada si no se encuentra ningun Proyecto.
+     */
     public String listarProyectos() throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -74,6 +95,13 @@ public class DAOProyecto {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de listar todos los Proyectos en la base de datos.
+     * @param idProyecto id del proyecto que se lista.
+     * @return Devuelve un objeto JSON con los proyectos listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException  Lanzada si no se encuentra ningun Proyecto.
+     */
     public String buscarProyecto(int idProyecto) throws HTTPStatusException, SQLException {
         String json = "";
         Gson gson = new Gson();
@@ -97,6 +125,13 @@ public class DAOProyecto {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de listar todos los Proyectos, a los que pertenece un Usuario, en la base de datos.
+     * @param idUsuario id del usuario para el que se listan los proyectos.
+     * @return Devuelve un objeto JSON con los proyectos listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException  Lanzada si no se encuentra ningun Proyecto.
+     */
     public String buscarProyectoPorUsuario (int idUsuario) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -130,6 +165,13 @@ public class DAOProyecto {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de listar los usuarios que pertenecen a un proyecto desde la base de datos.
+     * @param idProyecto del proyecto para el que se listan los usuarios.
+     * @return Devuelve un objeto JSON con los usuarios listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException  Lanzada si no se encuentra ningun Proyecto.
+     */
     public String usuariosSegunProyecto(int idProyecto) throws SQLException, HTTPStatusException {
 
         String json = "";
@@ -163,7 +205,16 @@ public class DAOProyecto {
         return json;
     }
 
-
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de editar un proyecto en la base de datos.
+     * @param id del proyecto.
+     * @param titulo del proyecto.
+     * @param descripcion del proyecto.
+     * @param estado del proyecto.
+     * @param fechaInicio del proyecto.
+     * @param fechaFinal del proyecto.
+     * @throws SQLException Lanzada en el caso de error a la hora de editar.
+     */
     public void editarProyecto(int id, String titulo, String descripcion, String estado, java.util.Date fechaInicio, java.util.Date fechaFinal) throws SQLException {
         String sql = "UPDATE proyecto SET titulo=?, descripcion=?, estado=?, fechaInicio=?, fechaFin=? WHERE id=?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -179,6 +230,12 @@ public class DAOProyecto {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de actualizar el estado de un proyecto en la base de datos.
+     * @param id del proyecto que se actualiza
+     * @param estado que se actualzia en el proyecto.
+     * @throws SQLException Lanzada en el caso de error a la hora de actualizar.
+     */
     public void actualizarEstado(int id, String estado) throws SQLException {
         String sql = "UPDATE proyecto SET estado=? WHERE id=?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -190,6 +247,12 @@ public class DAOProyecto {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de asignar un usuario a un proyecto en la base de datos.
+     * @param idProyecto id del proyecto al que se asigna el usuario.
+     * @param idUsuario id del usuario que es asignado
+     * @throws SQLException Lanzada en el caso de error.
+     */
     public void asignarUsuario(int idProyecto, int idUsuario) throws SQLException {
         String sql = "INSERT INTO usuario_proyecto (idUsuario, idProyecto) VALUES (?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -201,6 +264,12 @@ public class DAOProyecto {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Proyecto encargado de quitar a un usuario de un proyecto.
+     * @param idProyecto del proyecto del que se quita el usuario.
+     * @param idUsuario del usuario que es quitado del proyecto.
+     * @throws SQLException Lanzada en el caso de error.
+     */
     public void quitarUsuario(int idProyecto, int idUsuario) throws SQLException {
         String sql = "DELETE FROM usuario_proyecto WHERE idUsuario=? AND idProyecto=?";
         PreparedStatement ps = con.prepareStatement(sql);

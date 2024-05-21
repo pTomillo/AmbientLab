@@ -4,11 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Administrador</title>
+    <title>Listado de Proyectos</title>
+    <!-- Logo de la pestaña  --> 
+    <link rel="icon" href="img/LogitoAmbientLab.png">
+    <!-- Link a la fuente  --> 
+    <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+    <!-- Link al CSS  --> 
     <link rel="stylesheet" href="css/base.css">
+    <!-- Link a los archivos JS necesarios  -->
+    <script src="js/funcionesVarias.js"></script>
+    
+
 </head>
 
 <body>
+    <!-- Nav Bar  -->
     <nav>
         <div class="logo-container">
             <div id="logo"><img src="img/LogitoAmbientLab.png" width="100px" alt=""></div>
@@ -47,23 +57,27 @@
             <li class="desplegable">
                 <a href="#" class="botonDesplegable">Perfil de Usuario</a>
                 <div class="contenido_desplegable">
-                    <a href="perfilUsuario.html">Ver mi perfil</a>
+                    <a href="perfilUsuarioAdmin.html">Ver mi perfil</a>
                     <a href="#" onclick="cerrarSesion()">Cerrar sesion</a>
                 </div>
             </li>
         </ul>
     </nav>
-     <!-- Cuerpo de la pagina  -->
-     <div id=cuerpo>
+    <!-- Cuerpo de la pagina  -->
+    <div id=cuerpo>
         <div id="contenedorDashboard">
-            <h1>Proyecto</h1>
-            <div id="cajaProyectos" class="cajaLista"></div>
-            <button onclick="window.location.href = 'crearProyecto.html'">Crear Proyecto</button>
-            <h1>Tareas</h1>
-            <div id="cajaTarea" class="cajaLista"></div>
+            <h1>Listado de Muestras</h1>
+            <div id="cajaMuestra" class="cajaLista"></div>
     </div>
     <div id="cajaError"></div>
     <div id="cajaConfirmacion"></div>
+
 </body>
+
+<script>
+    window.onload = function(){
+        listarMuestras()
+    }
+</script>
 
 </html>

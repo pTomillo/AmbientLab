@@ -11,13 +11,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de acceder a la base de datos para la clase Resultado.
+ */
 public class DAOResultado {
 
     public Connection con = null;
+
+    /**
+     * Conexion a la base de datos.
+     * @throws SQLException
+     */
     public DAOResultado() throws SQLException {
         this.con = DBConexion.getConexion();
     }
 
+    /**
+     * Metodo del DAO para la clase Resultado encargado de registrar la creacion de un Resultado en la base de datos.
+     * @param aAnadir objeto Resultado que ser añadido a la base de datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de crear.
+     */
     public void guardarResultado(Resultado aAnadir) throws SQLException {
         String sql = "INSERT INTO resultado (parametro, valor, unidad, idAnalisis) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -31,6 +44,11 @@ public class DAOResultado {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Resultado encargado de borrar un Resultado en la base de datos.
+     * @param idResultado del resultado que va a ser borrado.
+     * @throws SQLException Lanzada en el caso de error a la hora de borrar.
+     */
     public void borrarResultado(int idResultado) throws SQLException {
         String sql = "DELETE FROM resultado WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -41,7 +59,11 @@ public class DAOResultado {
         ps.close();
     }
 
-
+    /**
+     * Metodo del DAO para la clase Resultado encargado de editar un Resultado en la base de datos.
+     * @param aEditar objeto Resultado que va a ser editado.
+     * @throws SQLException Lanzada en el caso de error a la hora de editar.
+     */
     public void editarResultado(Resultado aEditar) throws SQLException {
         String sql = "UPDATE resultado SET parametro = ?, valor = ?, unidad = ?, idAnalisis = ? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -57,6 +79,12 @@ public class DAOResultado {
 
     }
 
+    /**
+     * Metodo del DAO para la clase Resultado encargado de listar todos los Resultados en la base de datos.
+     * @return Devuelve un objeto JSON con los resultados listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun Resultado.
+     */
     public String listarResultados() throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -88,6 +116,13 @@ public class DAOResultado {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Resultado encargado de listar un solo Resultado desde la base de datos.
+     * @param idResultado del resultado listado
+     * @return Devuelve un objeto JSON con los resultados listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun Resultado.
+     */
     public String listarResultado(int idResultado) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -111,6 +146,13 @@ public class DAOResultado {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Resultado encargado de listar los resultados para un analisis dado desde la base de datos.
+     * @param idAnalisis del analisis para el que se listan los resultados.
+     * @return Devuelve un objeto JSON con los resultados listados.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     * @throws HTTPStatusException Lanzada si no se encuentra ningun Resultado.
+     */
     public String listarResultadoPorAnalisis(int idAnalisis) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();

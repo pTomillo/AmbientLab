@@ -16,6 +16,9 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 
+/**
+ * Este servlet maneja la peticiones a la clase Tarea. Incluyendo las peticiones de creacion, listado, edicion y borrado.
+ */
 @WebServlet(name = "GestionTarea", value = "/GestionTarea")
 public class GestionTarea extends HttpServlet {
     ServicioLogin servicioLogin = new ServicioLogin();
@@ -25,6 +28,13 @@ public class GestionTarea extends HttpServlet {
     public GestionTarea() throws SQLException {
     }
 
+    /**
+     * Maneja el metodo GET del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicutd doGet.
@@ -102,6 +112,13 @@ public class GestionTarea extends HttpServlet {
 
     }
 
+    /**
+     * Maneja el metodo POST del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicutd doPost.
@@ -131,6 +148,13 @@ public class GestionTarea extends HttpServlet {
 
     }
 
+    /**
+     * Maneja el metodo PUT del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicutd doPut.
@@ -174,6 +198,13 @@ public class GestionTarea extends HttpServlet {
 
     }
 
+    /**
+     * Maneja el metodo DELETE del servlet.
+     * @param request objeto que contiene  la solicitud realizada por el cliente.
+     * @param response objeto que contiene la respuesta que el servlet envia al cliente.
+     * @throws ServletException Lanza la excepcion si el metodo GET no puede ser ejecutado.
+     * @throws IOException Lanza la excepcion si el metodo GET detecta un error en el input o output del metodo.
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Manejo solicutd doDelete.

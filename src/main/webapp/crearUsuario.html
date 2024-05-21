@@ -1,75 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Usuario</title>
-    <link rel="stylesheet" href="base.css">
-
+    <!-- Logo de la pestaña  --> 
+    <link rel="icon" href="img/LogitoAmbientLab.png">
+    <!-- Link a la fuente  --> 
     <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+    <!-- Link al CSS  --> 
+    <link rel="stylesheet" href="css/base.css">
+    <!-- Link a los archivos JS necesarios  -->
+    <script src="js/funcionesVarias.js"></script>
+    
 
-    <style>
-        @import url('https://fonts.cdnfonts.com/css/garet');
-    </style>
 </head>
+
 <body>
-
-<form action="GestionUsuario" method="post">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" required><br><br>
-    <label for="apellidos">Apellidos:</label>
-    <input type="text" id="apellidos" name="apellidos" required><br><br>
-    <label for="rol">Rol:</label>
-    <select name="rol" id="rol">
-        <option value="1">Admin</option>
-        <option value="2">Supervisor</option>
-        <option value="3">Analista</option>
-        <option value="4">Registro</option>
-        <option value="9">Cliente</option>
-    </select><br><br>
-    <label for="email">Email:</label>
-    <input type="text" id="email" name="email" required><br><br>
-    <label for="contrasena">Contraseña:</label>
-    <input type="password" id="contrasena" name="contrasena" required><br><br>
-    <input type="submit" value="Crear Usuario" onsubmit="window.location.href; return false">
-</form>
-
-
-
-<div id="cajaResultado">
-    <table>
-        <tr>
-            <th>Parámetro</th>
-            <th>Valor</th>
-            <th>Unidad</th>
-            <th>ID de Análisis</th>
-            <th>Editar</th>
-            <th>Borrar</th>
-        </tr>
-        <!-- Ejemplo de datos -->
-        <tr>
-            <td>Parámetro 1</td>
-            <td>Valor 1</td>
-            <td>Unidad 1</td>
-            <td>ID de Análisis 1</td>
-            <td><button onclick="window.location.href='editarResultado.html?idResultado=1'">Editar</button></td>
-            <td><input type="button" value="Borrar" onclick="borrarResultado(1)"/></td>
-        </tr>
-        <!-- Otros resultados... -->
-        <!-- Fila para agregar nuevo resultado -->
-        <tr>
-            <td><input type="text" id="nuevoParametro"></td>
-            <td><input type="text" id="nuevoValor"></td>
-            <td><input type="text" id="nuevaUnidad"></td>
-            <td><input type="text" id="nuevoIdAnalisis"></td>
-            <td></td>
-            <td><button onclick="agregarNuevoResultado()">Agregar</button></td>
-        </tr>
-    </table>
-</div>
-
-
-
+    <!-- Nav Bar  -->
+    <nav>
+        <div class="logo-container">
+            <div id="logo"><img src="img/LogitoAmbientLab.png" width="100px" alt=""></div>
+        </div>
+        <div id="AmbientLab">AmbientLab</div>
+        <ul class="nav-links">
+            <li class="desplegable">
+                <a href="dashboard.html" class="botonDesplegable">Usuarios</a>
+                <div class="contenido_desplegable">
+                    <a href="listadoUsuarios.html">Listado Usuarios</a>
+                    <a href="crearUsuario.html">Crear Usuario</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Proyectos</a>
+                <div class="contenido_desplegable">
+                    <a href="listadoProyectosAdmin.html">Listado proyectos</a>
+                    <a href="crearProyecto.html">Crear proyecto</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Muestras</a>
+                <div class="contenido_desplegable">
+                    <a href="listadoMuestras.html">Listado Muestras</a>
+                    <a href="registrarMuestra.html">Crear Muestras</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Analisis</a>
+                <div class="contenido_desplegable">
+                    <a href="listadoAnalisis.html">Listado Analisis</a>
+                    <a href="crearAnalisis.html">Crear Analisis</a>
+                </div>
+            </li>
+            <li class="desplegable">
+                <a href="#" class="botonDesplegable">Perfil de Usuario</a>
+                <div class="contenido_desplegable">
+                    <a href="perfilUsuario.html">Ver mi perfil</a>
+                    <a href="#" onclick="cerrarSesion()">Cerrar sesion</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- Cuerpo de la pagina  -->
+    <div id=cuerpo>
+        <div id="contenedorDashboard">
+            <h1>Crear Usuario</h1>
+            <div id="cajaUsuario" class="cajaFormulario">
+                <form action="GestionUsuario" method="post">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required><br><br>
+                    <label for="apellidos">Apellidos:</label>
+                    <input type="text" id="apellidos" name="apellidos" required><br><br>
+                    <label for="rol">Rol:</label>
+                    <select name="rol" id="rol">
+                        <option value="1">Admin</option>
+                        <option value="2">Supervisor</option>
+                        <option value="3">Analista</option>
+                        <option value="4">Registro</option>
+                        <option value="9">Cliente</option>
+                    </select><br><br>
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email" required><br><br>
+                    <label for="contrasena">Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" required><br><br>
+                    <input type="submit" value="Crear Usuario" onsubmit="iniciarSesion()">
+                </form>
+            </div>
+    </div>
+    <div id="cajaError"></div>
+    <div id="cajaConfirmacion"></div>
 
 </body>
+
+<script>
+    window.onload = function(){
+    }
+</script>
+
 </html>
+

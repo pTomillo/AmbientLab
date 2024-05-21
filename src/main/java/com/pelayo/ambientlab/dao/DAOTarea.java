@@ -12,14 +12,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de acceder a la base de datos para la clase Tarea.
+ */
 public class DAOTarea {
     public Connection con = null;
 
+    /**
+     * Conexion a la base de datos.
+     * @throws SQLException
+     */
     public DAOTarea() throws SQLException {
         this.con = DBConexion.getConexion();
     }
 
-
+    /**
+     * Metodo del DAO para la clase Tarea encargado de registrar la creacion de una Tarea en la base de datos.
+     * @param aCrear Objeto Tarea que se pasa para ser guardado en la base de datos.
+     * @throws SQLException Lanzada en el caso de error a la hora de crear.
+     */
     public void crearTarea(Tarea aCrear) throws SQLException {
         String sql = "INSERT INTO tarea (titulo, observaciones, estado, idProyecto, idUsuario) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -34,6 +45,11 @@ public class DAOTarea {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de borrar una Tarea en la base de datos.
+     * @param idTarea de la tarea que va ser borrada.
+     * @throws SQLException Lanzada en el caso de error a la hora de borrar.
+     */
     public void borrarTarea(int idTarea) throws SQLException {
         String sql = "DELETE FROM tarea WHERE id=?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -42,9 +58,14 @@ public class DAOTarea {
 
         ps.executeUpdate();
         ps.close();
-
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de editar una Tarea en la base de datos.
+     * @param aEditar objeto Tarea que es editado.
+     * @param idTarea id de la Tarea a editar.
+     * @throws SQLException Lanzada en el caso de error a la hora de editar.
+     */
     public void editarTarea(Tarea aEditar, int idTarea) throws SQLException {
         String sql = "UPDATE tarea SET titulo=?, observaciones=?, estado=?, idProyecto=?, idUsuario = ? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -61,6 +82,12 @@ public class DAOTarea {
 
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de actualizar el estado de una Tarea en la base de datos.
+     * @param estado estado que es actualizado
+     * @param idTarea para la que se actualiza el estado.
+     * @throws SQLException Lanzada en el caso de error a la hora de actualizar el estado.
+     */
     public void actualizarEstado(String estado, int idTarea) throws SQLException {
         String sql = "UPDATE tarea SET estado =? WHERE id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -72,6 +99,12 @@ public class DAOTarea {
         ps.close();
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de listar todas las Tareas en la base de datos.
+     * @return Devuelve un objeto JSON con las Tareas listadas.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Tarea.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     */
     public String listarTareas() throws HTTPStatusException, SQLException {
         String json = "";
         Gson gson = new Gson();
@@ -103,6 +136,13 @@ public class DAOTarea {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de listar una Tarea desde la base de datos.
+     * @param idTarea id de la Tarea listada.
+     * @return Devuelve un objeto JSON con las Tareas listadas.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Tarea.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     */
     public String listarUnaTarea(int idTarea) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -126,6 +166,13 @@ public class DAOTarea {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de listar todas las Tareas de un Proyecto desde la base de datos.
+     * @param idProyecto id del proyecto para el que se listan las tareas.
+     * @return Devuelve un objeto JSON con las Tareas listadas.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Tarea.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     */
     public String tareasPorProyecto(int idProyecto) throws SQLException, HTTPStatusException {
         String json = "";
         Gson gson = new Gson();
@@ -159,6 +206,13 @@ public class DAOTarea {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de listar todas las Tareas de un Usuario desde la base de datos.
+     * @param idUsuario id del usuario para el que se listan las tareas.
+     * @return Devuelve un objeto JSON con las Tareas listadas.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Tarea.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     */
     public String tareasPorUsuario(int idUsuario) throws HTTPStatusException, SQLException {
         String json = "";
         Gson gson = new Gson();
@@ -192,6 +246,14 @@ public class DAOTarea {
         return json;
     }
 
+    /**
+     * Metodo del DAO para la clase Tarea encargado de listar todas las Tareas de un Usuario para un proyecto dado desde la base de datos.
+     * @param idProyecto id del proyecto en el que esta el Usuario
+     * @param idUsuario id del usuario para el que se van a listar las tareas por proyecto.
+     * @return Devuelve un objeto JSON con las Tareas listadas.
+     * @throws HTTPStatusException Lanzada si no se encuentra ninguna Tarea.
+     * @throws SQLException Lanzada en el caso de error a la hora de listar.
+     */
     public String tareasPorProyectoXUsuario(int idProyecto, int idUsuario) throws HTTPStatusException, SQLException {
         String json = "";
         Gson gson = new Gson();
