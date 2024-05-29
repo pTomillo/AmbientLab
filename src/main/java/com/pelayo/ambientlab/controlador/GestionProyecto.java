@@ -65,7 +65,7 @@ public class GestionProyecto extends HttpServlet {
                     throw new HTTPStatusException(403);
                 }
             } else if (opcion == 1) { // Listar un proyecto.
-                if (chequeo != null && (chequeo.esAdmin() || chequeo.esSupervisor())) {
+                if (chequeo != null) {
                     int id = Integer.parseInt(request.getParameter("idProyecto"));
                     String json = "";
                     json = this.daoProyecto.buscarProyecto(id);

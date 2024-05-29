@@ -1758,7 +1758,6 @@ function listarResultados() {
 function iniciarSesion() {
     const email = document.getElementById("email").value;
     const contrasena = document.getElementById("contrasena").value;
-    console.log(email, contrasena)
     fetch(`LoginUsuario?email=${email}&contrasena=${contrasena}&op=0`, { method: "POST" })
         .then(response => {
             if (!response.ok) {
